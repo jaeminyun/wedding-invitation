@@ -2,23 +2,19 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <!-- 검색엔진 수집 방지 (noindex) -->
     <meta name="robots" content="noindex, nofollow, noarchive">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- 카카오톡 / SNS 링크 공유용 썸네일 (오픈 그래프) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="수한 & 혜정의 결혼식에 초대합니다">
     <meta property="og:description" content="2027년 4월 10일 토요일 오후 1:20 | 송도 메리빌리아">
     <meta property="og:image" content="https://270410-wedding-invitation.vercel.app//photo.jpg">
     <meta property="og:url" content="https://270410-wedding-invitation.vercel.app/">
 
-    <!-- 카카오 지도 SDK 불러오기 -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=517e43dc3921658cba637633d306611c"></script>
 
     <title>수한 & 혜정의 결혼식에 초대합니다</title>
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -42,12 +38,9 @@
         }
     </script>
 
-    <!-- Google Fonts (Serif 계열) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-    <!-- FontAwesome 아이콘 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -82,10 +75,11 @@
         .zoomable-image { transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); transform-origin: center center; }
     </style>
 </head>
+
 <body class="antialiased flex justify-center bg-[#FAF8F5]">
 
-    <!-- 컨페티 캔버스 레이어 -->
-    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-non z-50"></canvas>
+    <!-- 컨페티 캔버스 레이어 (오타 수정됨: pointer-events-none) -->
+    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
 
     <!-- 복사 성공 토스트 알림 -->
     <div id="toast-notification" class="fixed top-5 left-1/2 -translate-x-1/2 z-[10000] bg-charcoal/90 text-white text-xs px-5 py-3 rounded-full shadow-lg border border-gold/40 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4 flex items-center gap-2">
@@ -118,7 +112,7 @@
             </div>
         </section>
 
-        <!-- [2. 초대글 & 혼주 정보] -->
+         <!-- [2. 초대글 & 혼주 정보] -->
         <section class="py-14 px-8 text-center bg-cream-dark/30 border-y border-gold-light/40 relative">
             <div class="w-8 h-[1px] bg-gold mx-auto mb-8"></div>
             <h2 class="font-cinzel text-sm tracking-[0.2em] text-gold uppercase mb-6">INVITATION</h2>
@@ -204,7 +198,7 @@
             <div id="thumbnail-strip" class="flex gap-2 overflow-x-auto py-2 px-1 scrollbar-none justify-start sm:justify-center z-10"></div>
         </div>
 
-        <!-- [4. 캘린더 & D-Day 카운트다운] -->
+            <!-- [4. 캘린더 & D-Day 카운트다운] -->
         <section class="px-6 py-8">
             <div class="bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-[#C5A880]/20 text-center">
                 <h3 class="font-cinzel text-sm tracking-[0.2em] text-[#8C7355] mb-4">CALENDAR</h3>
@@ -231,7 +225,6 @@
             <p class="font-serif text-base text-charcoal font-medium">송도 메리빌리아</p>
             <p class="text-xs text-sub-gray font-light mt-1 mb-6">인천 연수구 컨벤시아대로 391 (송도동 174-3)</p>
 
-            <!-- 카카오 지도가 들어갈 박스 영역 -->
             <div id="map" class="w-full aspect-[4/3] bg-cream-dark rounded-2xl overflow-hidden shadow-sm border border-gold-light/40 mb-6 flex flex-col items-center justify-center"></div>
 
             <div class="grid grid-cols-2 gap-3 mb-16">
@@ -309,14 +302,11 @@
         </section>
     </main>
 
-    <!-- 자바스크립트 로직 -->
-    <script>
-        // 카카오 지도 초기화 및 송도 메리빌리아 마커 표시
+        <script>
         function initKakaoMap() {
             const container = document.getElementById('map');
             if (!container) return;
             
-            // 송도 메리빌리아 좌표 설정
             const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
             const options = {
                 center: latLng,
@@ -324,8 +314,6 @@
             };
             
             const map = new kakao.maps.Map(container, options);
-            
-            // 웨딩홀 위치 핀(마커) 꽂기
             const marker = new kakao.maps.Marker({
                 position: latLng
             });
@@ -587,9 +575,14 @@
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('dragstart', e => e.preventDefault());
 
-        // 페이지 로드시 지도 및 모든 기능 실행
+        // 페이지 로드시 지도 에러 방지 안전장치 적용
         window.onload = function() {
-            initKakaoMap();
+            try {
+                initKakaoMap();
+            } catch (e) {
+                console.error("카카오 지도 로드 실패:", e);
+            }
+            
             animateConfetti();
             triggerInitialConfetti();
             renderCalendar();

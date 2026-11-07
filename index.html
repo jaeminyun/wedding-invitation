@@ -1,5 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko">
+
+<vercel.json>
+    {
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
+}
+
 <head>
     <!-- 구글 폰트 (나눔명조/Cinzel) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -344,28 +360,52 @@
         <script>
         // 카카오 지도 정상 로드 및 렌더링 함수
         function initKakaoMap() {
-            const container = document.getElementById('map');
-            if (!container) return;
-            
-            kakao.maps.load(function() {
-                const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
-                const options = {
-                    center: latLng,
-                    level: 3
-                };
-                
-                const map = new kakao.maps.Map(container, options);
-                const marker = new kakao.maps.Marker({
-                    position: latLng
-                });
-                marker.setMap(map);
+    const container = document.getElementById('map');
+    if (!container) return;
 
-                setTimeout(function() {
-                    map.relayout();
-                    map.setCenter(latLng);
-                }, 300);
-            });
-        }
+    kakao.maps.load(function() {
+        const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+        const options = {
+            center: latLng,
+            level: 3
+        };
+        
+        const map = new kakao.maps.Map(container, options);
+
+        // 엑박 방지용 카카오 공식 마커 이미지 직접 지정
+        const markerImage = new kakao.maps.MarkerImage(
+            'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+            new kakao.maps.Size(24, 35)
+        );
+
+        const marker = new kakao.maps.Marker({
+            position: latLng,
+            image: markerImage,
+            map: map
+        });
+
+        // 핀 위에 '송도 메리빌리아' 예쁜 라벨 띄우기
+        const overlayContent = `
+            <div style="padding:5px 10px; background:#2C2A29; color:#ffffff; border-radius:8px; font-size:11px; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.3); margin-bottom:80px; text-align:center; whitespace:nowrap;">
+                📍 송도 메리빌리아
+            </div>
+        `;
+
+        const customOverlay = new kakao.maps.CustomOverlay({
+            position: latLng,
+            content: overlayContent,
+            yAnchor: 1
+        });
+        customOverlay.setMap(map);
+
+        setTimeout(function() {
+            map.relayout();
+            map.setCenter(latLng);
+        }, 300);
+    });
+}
+
+
 
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');

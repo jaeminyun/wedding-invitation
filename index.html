@@ -10,19 +10,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-    /* 네이버 나눔손글씨 손편지체 (jsDelivr CDN) */
-    @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Handletter.woff');
+    /* 로컬 폴더에 있는 펜글씨 WOFF 연결 */
+    @font-face {
+        font-family: 'NaverHandLetter';
+        src: url('./fonts/NanumPenScript.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
 
     .couple-name-style {
-        font-family: 'Handletter', cursive, sans-serif !important;
-        font-size: 2.5rem !important;
+        font-family: 'NaverHandLetter', cursive, sans-serif !important;
+        font-size: 2.2rem !important;
         font-weight: 400 !important;
         color: #4A4543 !important;
         letter-spacing: 0.02em;
         line-height: 1.2;
     }
 </style>
-
 
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow, noarchive">

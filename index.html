@@ -250,11 +250,11 @@
             <div class="grid grid-cols-2 gap-3 mb-16">
                 <a href="https://naver.me/5FmSJ8Gu" target="_blank" class="py-3 px-4 bg-white border border-gold-light/60 rounded-xl text-xs font-medium text-charcoal shadow-sm flex items-center justify-center gap-2 hover:bg-cream-dark/30 transition-all">
                     <span class="w-4 h-4 rounded-full bg-[#03CF5D] text-white text-[9px] font-bold flex items-center justify-center">N</span>
-                    네이버 지도
+                    네이버지도
                 </a>
                 <a href="https://place.map.kakao.com/525830344" target="_blank" class="py-3 px-4 bg-white border border-gold-light/60 rounded-xl text-xs font-medium text-charcoal shadow-sm flex items-center justify-center gap-2 hover:bg-cream-dark/30 transition-all">
                     <span class="w-4 h-4 rounded-full bg-[#FEE500] text-black text-[9px] font-bold flex items-center justify-center">K</span>
-                    카카오 내비
+                    카카오맵
                 </a>
             </div>
 
@@ -365,17 +365,18 @@
         
         const map = new kakao.maps.Map(container, options);
 
-        // 글자 없이 깔끔하고 고급스러운 원형 핀 (엑박 0%)
-        const pinContent = `
-            <div style="width: 18px; height: 18px; background: #C5A880; border: 3px solid #ffffff; border-radius: 50%; box-shadow: 0 3px 8px rgba(0,0,0,0.4); transform: translate(-50%, -50%);"></div>
-        `;
+        // 하트 마커 핀 생성
+const imageSrc = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23E57373" width="36" height="36"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+const imageSize = new kakao.maps.Size(36, 36);
+const imageOption = {offset: new kakao.maps.Point(18, 36)};
 
-        const customOverlay = new kakao.maps.CustomOverlay({
-            position: latLng,
-            content: pinContent,
-            yAnchor: 0.5
-        });
-        customOverlay.setMap(map);
+const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+const marker = new kakao.maps.Marker({
+    position: latLng,
+    image: markerImage
+});
+marker.setMap(map);
+
 
         // 지도 크기 및 중심 재조정
         setTimeout(function() {

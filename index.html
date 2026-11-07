@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 
+    <head>
+    <!-- 폰트 파일을 최우선으로 즉시 다운로드 시작 -->
+    <link rel="preload" href="./fonts/NanumPenScript.woff" as="font" type="font/woff" crossorigin>
+
 <meta property="og:image" content="https://270410-wedding-invitation.vercel.app/kakao-share.jpg">
 
 <head>
@@ -9,24 +13,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
 
+    
     <style>
-    @font-face {
-        font-family: 'NaverHandLetter';
-        src: url('./fonts/NanumPenScript.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-    }
+        @font-face {
+            font-family: 'NaverHandLetter';
+            src: url('./fonts/NanumPenScript.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            /* block: 폰트 로딩될 때까지 텍스트를 숨겨서 기본 폰트(고딕체)가 깜빡이는 현상을 원천 차단합니다 */
+            font-display: block; 
+        }
 
-    .couple-name-style {
-        font-family: 'NaverHandLetter', sans-serif !important;
-        font-size: 3rem !important; /* 크기를 3rem으로 확대 */
-        font-weight: 400 !important;
-        color: #4A4543 !important;
-        letter-spacing: 0.02em;
-        line-height: 1.2;
-    }
-</style>
+        .couple-name-style {
+            font-family: 'NaverHandLetter', sans-serif !important;
+            font-size: 3rem !important;
+            font-weight: 400 !important;
+            color: #4A4543 !important;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+
 
 
     <meta charset="UTF-8">
@@ -413,7 +421,7 @@ customOverlay.setMap(map);
         let particles = [];
 
         class HeartParticle {
-            constructor(x, y, isUpwardBurst = false) {
+                constructor(x, y, isUpwardBurst = false) {
                 this.x = x;
                 this.y = y;
                 this.emoji = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
@@ -422,9 +430,10 @@ customOverlay.setMap(map);
                 this.fade = Math.random() * 0.015 + 0.008;
 
                 if (isUpwardBurst) {
-                    const angle = (Math.random() * 60 + 60) * (Math.PI / 180); 
-                    const speed = Math.random() * 14 + 10; 
-                    this.vx = -Math.cos(angle) * (Math.random() > 0.5 ? 1 : -1) * (speed * 0.6);
+                    // [수정] 오른쪽에서 왼쪽 위(-X 방향)로 비스듬히 뻗어가도록 각도와 x축 벡터 수정
+                    const angle = (Math.random() * 30 + 55) * (Math.PI / 180); 
+                    const speed = Math.random() * 12 + 8; 
+                    this.vx = -Math.cos(angle) * speed - 2; // 음수(-)를 주어 확실하게 왼쪽 위로 향하게 합니다
                     this.vy = -Math.sin(angle) * speed; 
                     this.gravity = 0.35;
                 } else {
@@ -437,6 +446,7 @@ customOverlay.setMap(map);
                 this.rotation = Math.random() * Math.PI;
                 this.vRot = (Math.random() - 0.5) * 0.1;
             }
+
             update() {
                 this.x += this.vx;
                 this.y += this.vy;

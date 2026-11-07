@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-    /* 로컬 폴더에 있는 펜글씨 WOFF 연결 */
     @font-face {
         font-family: 'NaverHandLetter';
         src: url('./fonts/NanumPenScript.woff') format('woff');
@@ -20,14 +19,15 @@
     }
 
     .couple-name-style {
-        font-family: 'NaverHandLetter', cursive, sans-serif !important;
-        font-size: 2.2rem !important;
+        font-family: 'NaverHandLetter', sans-serif !important;
+        font-size: 3rem !important; /* 크기를 3rem으로 확대 */
         font-weight: 400 !important;
         color: #4A4543 !important;
         letter-spacing: 0.02em;
         line-height: 1.2;
     }
 </style>
+
 
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow, noarchive">
@@ -350,7 +350,7 @@
                     예쁘고 행복하게 잘 살겠습니다.
                 </p>
                 <div class="pt-2">
-                    <p class="font-serif text-sm font-medium text-charcoal tracking-widest">- 수한 · 혜정 드림 -</p>
+                    <p class="font-serif text-[11px] font-light text-sub-gray tracking-widest">- 수한 · 혜정 드림 -</p>
                 </div>
             </div>
             <div class="mt-12 text-[10px] text-sub-gray/60 font-cinzel tracking-widest">THANK YOU FOR CELEBRATING WITH US</div>
@@ -617,6 +617,8 @@ customOverlay.setMap(map);
             const title = document.getElementById('calendar-title');
             if (!grid || !title) return;
             title.textContent = '2027. 04';
+            title.style.fontSize = '1.3rem'; // <--- 이 줄을 추가해 주세요! (원하시는 만큼 숫자 조절 가능)
+            title.style.fontWeight = '600';  /* 약간 두껍게 강조하고 싶다면 추가 */
             grid.innerHTML = '';
             
             const firstDayIndex = new Date(2027, 3, 1).getDay();

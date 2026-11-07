@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <!-- 검색엔진 수집 방지 (noindex) -->
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- 카카오톡 / SNS 링크 공유용 썸네일 (오픈 그래프) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="수한 & 혜정의 결혼식에 초대합니다">
+    <meta property="og:description" content="2027년 4월 10일 토요일 오후 1:20 | 송도 메리빌리아">
+    <meta property="og:image" content="https://270410-wedding-invitation.vercel.app//photo.jpg">
+    <meta property="og:url" content="https://270410-wedding-invitation.vercel.app/">
+
+    <!-- 카카오 지도 SDK 불러오기 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=517e43dc3921658cba637633d306611c"></script>
+
+    <title>수한 & 혜정의 결혼식에 초대합니다</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FAF8F5',
+                        'cream-dark': '#F2ECE1',
+                        gold: '#C5A880',
+                        'gold-dark': '#A3845B',
+                        'gold-light': '#E8DCC9',
+                        charcoal: '#2C2A29',
+                        'sub-gray': '#78736E'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', '"Noto Serif KR"', 'serif'],
+                        cinzel: ['"Cinzel"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts (Serif 계열) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #FAF8F5;
+            color: #2C2A29;
+            font-family: 'Noto Serif KR', serif;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 168, 128, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(197, 168, 128, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 168, 128, 0); }
+        }
+        .pulse-day { animation: pulse-ring 2s infinite; }
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        #confetti-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999;
+        }
+        img { -webkit-user-drag: none; user-drag: none; pointer-events: auto; background-color: #F2ECE1; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out; opacity: 0; }
+        .accordion-content.open { max-height: 1500px; opacity: 1; }
+        .zoomable-image { transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); transform-origin: center center; }
+    </style>
+</head>
+<body class="antialiased flex justify-center bg-[#FAF8F5]">
+
+    <!-- 컨페티 캔버스 레이어 -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- 복사 성공 토스트 알림 -->
+    <div id="toast-notification" class="fixed top-5 left-1/2 -translate-x-1/2 z-[10000] bg-charcoal/90 text-white text-xs px-5 py-3 rounded-full shadow-lg border border-gold/40 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4 flex items-center gap-2">
+        <i class="fa-solid fa-check text-gold"></i>
+        <span id="toast-message">계좌번호가 복사되었습니다.</span>
+    </div>
+
+    <!-- 메인 컨테이너 -->
+    <main class="w-full max-w-[480px] min-h-screen bg-[#FAF8F5] shadow-2xl relative overflow-hidden flex flex-col">
+
+        <!-- [1. 메인 히어로 & 아치 프레임 & 폭죽 버튼] -->
+        <section class="relative pt-10 pb-16 px-6 flex flex-col items-center text-center">
+            <p class="font-cinzel text-xs tracking-[0.3em] text-gold font-semibold uppercase mb-4">The Marriage of</p>
+            <h1 class="font-serif text-3xl text-charcoal font-light mb-6 tracking-wide">수한 <span class="text-gold font-normal">&</span> 혜정</h1>
+
+            <div class="relative w-full max-w-[340px] aspect-[3/4] rounded-t-[170px] rounded-b-2xl overflow-hidden shadow-xl border-4 border-white mb-8 group">
+                <img src="photo.jpg" alt="웨딩 대표 사진" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+
+                <button id="hero-firework-btn" 
+                    onclick="triggerButtonConfetti(event)"
+                    class="absolute bottom-4 right-4 glass-btn w-10 h-10 rounded-full shadow-lg text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer z-10">
+                    <span class="text-base leading-none">🥳</span>
+                </button>
+            </div>
+
+            <div class="space-y-2">
+                <p class="font-cinzel text-lg text-gold font-semibold tracking-widest">2027. 04. 10 SAT PM 1:20</p>
+                <p class="text-sm text-sub-gray font-light">송도 메리빌리아 2층 셀레스메리홀</p>
+            </div>
+        </section>
+
+        <!-- [2. 초대글 & 혼주 정보] -->
+        <section class="py-14 px-8 text-center bg-cream-dark/30 border-y border-gold-light/40 relative">
+            <div class="w-8 h-[1px] bg-gold mx-auto mb-8"></div>
+            <h2 class="font-cinzel text-sm tracking-[0.2em] text-gold uppercase mb-6">INVITATION</h2>
+            
+            <p class="text-sm leading-relaxed text-charcoal/90 font-light space-y-3 mb-10">
+                서로가 마주 보며 다져온 사랑을<br>
+                이제 같은 곳을 바라보며 깊게 세우고자 합니다.<br><br>
+                저희 두 사람이 하나가 되는 뜻깊은 날,<br>
+                고마운 분들을 모시고 약속의 첫걸음을 뗍니다.<br><br>
+                오셔서 따뜻한 축복으로 밝혀주시면<br>
+                더없는 기쁨으로 간직하겠습니다.
+            </p>
+
+            <div class="space-y-3 text-sm text-charcoal/90 font-normal pt-4">
+                <div class="flex items-center justify-center gap-2">
+                    <span class="text-sub-gray text-xs">윤 · 김</span>
+                    <span class="text-xs text-gold">의 아들</span>
+                    <span class="font-medium text-base text-charcoal">수한</span>
+                </div>
+                <div class="flex items-center justify-center gap-2">
+                    <span class="text-sub-gray text-xs">장 · 김</span>
+                    <span class="text-xs text-gold">의 딸</span>
+                    <span class="font-medium text-base text-charcoal">혜정</span>
+                </div>
+            </div>
+
+            <div class="w-8 h-[1px] bg-gold mx-auto mt-10"></div>
+        </section>
+
+        <!-- [3. 갤러리 (GALLERY)] -->
+        <section id="gallery-section" class="py-16 px-6 text-center">
+            <h2 class="font-cinzel text-xs tracking-[0.25em] text-gold uppercase mb-2">GALLERY</h2>
+            <p class="text-xs text-sub-gray mb-8 font-light">소중한 순간들을 담았습니다</p>
+
+            <div id="gallery-grid" class="grid grid-cols-3 gap-2">
+                <div class="aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(0)"><img src="photo1.jpg" class="w-full h-full object-cover" alt="갤러리 1"></div>
+                <div class="aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(1)"><img src="photo2.jpg" class="w-full h-full object-cover" alt="갤러리 2"></div>
+                <div class="aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(2)"><img src="photo3.jpg" class="w-full h-full object-cover" alt="갤러리 3"></div>
+                <div class="aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(3)"><img src="photo4.jpg" class="w-full h-full object-cover" alt="갤러리 4"></div>
+                <div class="aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(4)"><img src="photo5.jpg" class="w-full h-full object-cover" alt="갤러리 5"></div>
+                <div class="aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(5)"><img src="photo6.jpg" class="w-full h-full object-cover" alt="갤러리 6"></div>
+                <div class="aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(6)"><img src="photo7.jpg" class="w-full h-full object-cover" alt="갤러리 7"></div>
+                <div class="aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(7)"><img src="photo8.jpg" class="w-full h-full object-cover" alt="갤러리 8"></div>
+                <div class="aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(8)"><img src="photo9.jpg" class="w-full h-full object-cover" alt="갤러리 9"></div>
+
+                <div class="extra-photo hidden aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(9)"><img src="photo10.jpg" class="w-full h-full object-cover" alt="갤러리 10"></div>
+                <div class="extra-photo hidden aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(10)"><img src="photo11.jpg" class="w-full h-full object-cover" alt="갤러리 11"></div>
+                <div class="extra-photo hidden aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(11)"><img src="photo12.jpg" class="w-full h-full object-cover" alt="갤러리 12"></div>
+                <div class="extra-photo hidden aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(12)"><img src="photo13.jpg" class="w-full h-full object-cover" alt="갤러리 13"></div>
+                <div class="extra-photo hidden aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(13)"><img src="photo14.jpg" class="w-full h-full object-cover" alt="갤러리 14"></div>
+                <div class="extra-photo hidden aspect-square bg-cream-dark rounded-lg overflow-hidden cursor-pointer shadow-sm hover:opacity-90" onclick="openModal(14)"><img src="photo15.jpg" class="w-full h-full object-cover" alt="갤러리 15"></div>
+            </div>
+
+            <div class="mt-8">
+                <button id="toggle-gallery-btn" onclick="toggleGallery()" class="w-full py-3.5 border border-gold-light bg-white rounded-full text-xs text-charcoal font-medium shadow-sm hover:bg-cream-dark/40 active:scale-98 transition-all duration-200 flex items-center justify-center gap-2">
+                    <span id="gallery-btn-text">사진 더보기</span>
+                    <i id="gallery-btn-icon" class="fa-solid fa-chevron-down text-[10px] text-gold"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- [모달 뷰어] -->
+        <div id="gallery-modal" class="fixed inset-0 z-[10000] hidden bg-[#FAF8F5]/95 backdrop-blur-md flex flex-col justify-between p-4 transition-opacity duration-300">
+            <div class="flex items-center justify-between pt-2 px-2 z-10">
+                <span id="modal-counter" class="font-cinzel text-xs text-gold tracking-widest font-semibold">1 / 15</span>
+                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-white/80 border border-gold/30 flex items-center justify-center text-charcoal shadow-sm hover:bg-white active:scale-90 transition-all">
+                    <svg class="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+
+            <div class="relative flex-1 flex items-center justify-center overflow-hidden my-4" id="modal-touch-area">
+                <button onclick="prevModalImg()" class="absolute left-2 z-10 w-10 h-10 rounded-full bg-white/70 border border-gold/30 flex items-center justify-center text-charcoal shadow-md hover:bg-white active:scale-90 transition-all">
+                    <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+                </button>
+
+                <img id="modal-img" src="photo1.jpg" alt="상세 보기 사진" class="zoomable-image max-h-full max-w-full object-contain rounded-lg shadow-2xl select-none">
+
+                <button onclick="nextModalImg()" class="absolute right-2 z-10 w-10 h-10 rounded-full bg-white/70 border border-gold/30 flex items-center justify-center text-charcoal shadow-md hover:bg-white active:scale-90 transition-all">
+                    <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+                </button>
+            </div>
+
+            <div id="thumbnail-strip" class="flex gap-2 overflow-x-auto py-2 px-1 scrollbar-none justify-start sm:justify-center z-10"></div>
+        </div>
+
+        <!-- [4. 캘린더 & D-Day 카운트다운] -->
+        <section class="px-6 py-8">
+            <div class="bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-[#C5A880]/20 text-center">
+                <h3 class="font-cinzel text-sm tracking-[0.2em] text-[#8C7355] mb-4">CALENDAR</h3>
+                <div id="calendar-title" class="font-serif text-lg font-medium text-[#5C4A38] mb-4"></div>
+                
+                <div class="grid grid-cols-7 gap-1 text-center font-cinzel text-xs text-[#8C7355]/70 mb-3 font-semibold">
+                    <div class="text-rose-400">SUN</div>
+                    <div>MON</div>
+                    <div>TUE</div>
+                    <div>WED</div>
+                    <div>THU</div>
+                    <div>FRI</div>
+                    <div>SAT</div>
+                </div>
+                
+                <div id="calendar-grid" class="grid grid-cols-7 gap-y-3 gap-x-1 text-center font-sans text-sm mb-6"></div>
+                <div id="d-day-counter" class="pt-4 border-t border-[#C5A880]/20 text-xs tracking-wider text-[#7A6652] font-medium"></div>
+            </div>
+        </section>
+
+        <!-- [5. 오시는 길 (LOCATION) & 계좌 (ACCOUNT)] -->
+        <section class="py-16 px-6 text-center">
+            <h2 class="font-cinzel text-xs tracking-[0.25em] text-gold uppercase mb-2">LOCATION</h2>
+            <p class="font-serif text-base text-charcoal font-medium">송도 메리빌리아</p>
+            <p class="text-xs text-sub-gray font-light mt-1 mb-6">인천 연수구 컨벤시아대로 391 (송도동 174-3)</p>
+
+            <!-- 카카오 지도가 들어갈 박스 영역 -->
+            <div id="map" class="w-full aspect-[4/3] bg-cream-dark rounded-2xl overflow-hidden shadow-sm border border-gold-light/40 mb-6 flex flex-col items-center justify-center"></div>
+
+            <div class="grid grid-cols-2 gap-3 mb-16">
+                <a href="https://naver.me/5FmSJ8Gu" target="_blank" class="py-3 px-4 bg-white border border-gold-light/60 rounded-xl text-xs font-medium text-charcoal shadow-sm flex items-center justify-center gap-2 hover:bg-cream-dark/30 transition-all">
+                    <span class="w-4 h-4 rounded-full bg-[#03CF5D] text-white text-[9px] font-bold flex items-center justify-center">N</span>
+                    네이버 지도
+                </a>
+                <a href="https://place.map.kakao.com/525830344" target="_blank" class="py-3 px-4 bg-white border border-gold-light/60 rounded-xl text-xs font-medium text-charcoal shadow-sm flex items-center justify-center gap-2 hover:bg-cream-dark/30 transition-all">
+                    <span class="w-4 h-4 rounded-full bg-[#FEE500] text-black text-[9px] font-bold flex items-center justify-center">K</span>
+                    카카오 내비
+                </a>
+            </div>
+
+            <div class="w-8 h-[1px] bg-gold/40 mx-auto mb-14"></div>
+
+            <h2 class="font-cinzel text-xs tracking-[0.25em] text-gold uppercase mb-2">ACCOUNT</h2>
+            <p class="text-xs text-sub-gray mb-8 font-light">마음 전하실 곳</p>
+
+            <div class="space-y-4 max-w-[400px] mx-auto text-left">
+                <!-- 신랑측 계좌 -->
+                <div class="bg-white rounded-2xl border border-gold-light/50 overflow-hidden shadow-sm">
+                    <button onclick="toggleAccordion('groom-account')" class="w-full px-6 py-4 flex items-center justify-between text-sm font-medium text-charcoal hover:bg-cream-dark/20 transition-all">
+                        <span>신랑측 계좌번호</span>
+                        <i id="groom-account-icon" class="fa-solid fa-chevron-down text-xs text-gold transition-transform duration-300"></i>
+                    </button>
+                    <div id="groom-account" class="accordion-content px-6 bg-cream/30 border-t border-gold-light/20">
+                        <div class="py-5 space-y-4">
+                            <div class="flex items-center justify-between bg-white p-3.5 rounded-xl border border-gold-light/30 shadow-xs">
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] text-sub-gray">신랑 수한</span>
+                                    <span class="text-xs font-medium text-charcoal">신한 110-123-456789</span>
+                                </div>
+                                <button onclick="copyToClipboard('110-123-456789')" class="px-3 py-1.5 bg-cream-dark border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 신부측 계좌 -->
+                <div class="bg-white rounded-2xl border border-gold-light/50 overflow-hidden shadow-sm">
+                    <button onclick="toggleAccordion('bride-account')" class="w-full px-6 py-4 flex items-center justify-between text-sm font-medium text-charcoal hover:bg-cream-dark/20 transition-all">
+                        <span>신부측 계좌번호</span>
+                        <i id="bride-account-icon" class="fa-solid fa-chevron-down text-xs text-gold transition-transform duration-300"></i>
+                    </button>
+                    <div id="bride-account" class="accordion-content px-6 bg-cream/30 border-t border-gold-light/20">
+                        <div class="py-5 space-y-4">
+                            <div class="flex items-center justify-between bg-white p-3.5 rounded-xl border border-gold-light/30 shadow-xs">
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] text-sub-gray">신부 혜정</span>
+                                    <span class="text-xs font-medium text-charcoal">카카오뱅크 3333-01-9876543</span>
+                                </div>
+                                <button onclick="copyToClipboard('3333-01-9876543')" class="px-3 py-1.5 bg-cream-dark border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- [6. 감사의 글 (THANK YOU)] -->
+        <section class="py-16 px-6 bg-cream-dark/30 text-center">
+            <div class="bg-white rounded-3xl p-8 border border-gold-light/40 shadow-sm max-w-[380px] mx-auto space-y-6">
+                <i class="fa-solid fa-heart text-gold text-lg"></i>
+                <p class="text-xs leading-relaxed text-sub-gray font-light">
+                    저희 두 사람의 이 자리를 빛내어 주시는<br>
+                    모든 분들께 진심으로 감사드립니다.<br>
+                    따뜻한 축복을 마음에 안고<br>
+                    예쁘고 행복하게 잘 살겠습니다.
+                </p>
+                <div class="pt-2">
+                    <p class="font-serif text-sm font-medium text-charcoal tracking-widest">- 수한 · 혜정 드림 -</p>
+                </div>
+            </div>
+            <div class="mt-12 text-[10px] text-sub-gray/60 font-cinzel tracking-widest">THANK YOU FOR CELEBRATING WITH US</div>
+        </section>
+    </main>
+
+    <!-- 자바스크립트 로직 -->
+    <script>
+        // 카카오 지도 초기화 및 송도 메리빌리아 마커 표시
+        function initKakaoMap() {
+            const container = document.getElementById('map');
+            if (!container) return;
+            
+            // 송도 메리빌리아 좌표 설정
+            const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+            const options = {
+                center: latLng,
+                level: 3
+            };
+            
+            const map = new kakao.maps.Map(container, options);
+            
+            // 웨딩홀 위치 핀(마커) 꽂기
+            const marker = new kakao.maps.Marker({
+                position: latLng
+            });
+            marker.setMap(map);
+        }
+
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const heartEmojis = ['💙', '🖤', '💖'];
+        let particles = [];
+
+        class HeartParticle {
+            constructor(x, y, isUpwardBurst = false) {
+                this.x = x;
+                this.y = y;
+                this.emoji = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                this.size = Math.random() * 16 + 18;
+                this.opacity = 1;
+                this.fade = Math.random() * 0.015 + 0.008;
+
+                if (isUpwardBurst) {
+                    const angle = (Math.random() * 60 + 60) * (Math.PI / 180); 
+                    const speed = Math.random() * 14 + 10; 
+                    this.vx = -Math.cos(angle) * (Math.random() > 0.5 ? 1 : -1) * (speed * 0.6);
+                    this.vy = -Math.sin(angle) * speed; 
+                    this.gravity = 0.35;
+                } else {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 8 + 3;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                    this.gravity = 0.15;
+                }
+                this.rotation = Math.random() * Math.PI;
+                this.vRot = (Math.random() - 0.5) * 0.1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravity; 
+                this.opacity -= this.fade;
+                this.rotation += this.vRot;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(this.opacity, 0);
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.font = `${this.size}px serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.emoji, 0, 0);
+                ctx.restore();
+            }
+        }
+
+        function triggerInitialConfetti() {
+            for (let i = 0; i < 45; i++) {
+                particles.push(new HeartParticle(width / 2, height / 3, false));
+            }
+        }
+
+        function triggerButtonConfetti(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            for (let i = 0; i < 50; i++) {
+                particles.push(new HeartParticle(rect.left + rect.width / 2, rect.top, true));
+            }
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].opacity <= 0) particles.splice(i, 1);
+            }
+            requestAnimationFrame(animateConfetti);
+        }
+
+        let isGalleryExpanded = false;
+        function toggleGallery() {
+            const extraPhotos = document.querySelectorAll('.extra-photo');
+            const btnText = document.getElementById('gallery-btn-text');
+            const btnIcon = document.getElementById('gallery-btn-icon');
+            const gallerySection = document.getElementById('gallery-section');
+
+            if (!isGalleryExpanded) {
+                extraPhotos.forEach(el => el.classList.remove('hidden'));
+                btnText.textContent = '사진 접기';
+                btnIcon.className = 'fa-solid fa-chevron-up text-[10px] text-gold';
+                isGalleryExpanded = true;
+            } else {
+                gallerySection.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => {
+                    extraPhotos.forEach(el => el.classList.add('hidden'));
+                    btnText.textContent = '사진 더보기';
+                    btnIcon.className = 'fa-solid fa-chevron-down text-[10px] text-gold';
+                    isGalleryExpanded = false;
+                }, 300);
+            }
+        }
+
+        const galleryImages = [
+            "photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", 
+            "photo6.jpg", "photo7.jpg", "photo8.jpg", "photo9.jpg", "photo10.jpg", 
+            "photo11.jpg", "photo12.jpg", "photo13.jpg", "photo14.jpg", "photo15.jpg"
+        ];
+        let currentImgIdx = 0;
+        const modal = document.getElementById('gallery-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalCounter = document.getElementById('modal-counter');
+        const thumbnailStrip = document.getElementById('thumbnail-strip');
+
+        function initThumbnailStrip() {
+            thumbnailStrip.innerHTML = '';
+            galleryImages.forEach((imgUrl, index) => {
+                const thumb = document.createElement('img');
+                thumb.src = imgUrl;
+                thumb.className = `w-12 h-12 object-cover rounded-md cursor-pointer border-2 transition-all flex-shrink-0 ${index === currentImgIdx ? 'border-gold scale-105' : 'border-transparent opacity-60'}`;
+                thumb.onclick = () => showModalImg(index);
+                thumbnailStrip.appendChild(thumb);
+            });
+        }
+
+        function openModal(index) {
+            currentImgIdx = index;
+            initThumbnailStrip();
+            showModalImg(index);
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            resetZoom();
+        }
+
+        function showModalImg(index) {
+            currentImgIdx = index;
+            modalImg.src = galleryImages[index];
+            modalCounter.textContent = `${index + 1} / ${galleryImages.length}`;
+            resetZoom();
+
+            const thumbs = thumbnailStrip.children;
+            Array.from(thumbs).forEach((thumb, idx) => {
+                if (idx === index) {
+                    thumb.className = 'w-12 h-12 object-cover rounded-md cursor-pointer border-2 border-gold scale-105 opacity-100 flex-shrink-0';
+                    thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                } else {
+                    thumb.className = 'w-12 h-12 object-cover rounded-md cursor-pointer border-2 border-transparent opacity-60 flex-shrink-0';
+                }
+            });
+        }
+
+        function nextModalImg() { currentImgIdx = (currentImgIdx + 1) % galleryImages.length; showModalImg(currentImgIdx); }
+        function prevModalImg() { currentImgIdx = (currentImgIdx - 1 + galleryImages.length) % galleryImages.length; showModalImg(currentImgIdx); }
+
+        let touchStartX = 0, touchEndX = 0;
+        const touchArea = document.getElementById('modal-touch-area');
+        touchArea.addEventListener('touchstart', e => { if (e.touches.length === 1) touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        touchArea.addEventListener('touchend', e => {
+            if (e.changedTouches.length === 1 && currentScale === 1) {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchEndX - touchStartX;
+                if (Math.abs(diff) > 40) { diff < 0 ? nextModalImg() : prevModalImg(); }
+            }
+        }, { passive: true });
+
+        let currentScale = 1, lastTap = 0;
+        touchArea.addEventListener('touchend', e => {
+            const currentTime = new Date().getTime();
+            if (currentTime - lastTap < 300 && currentTime - lastTap > 0) {
+                currentScale = currentScale > 1 ? 1 : 2;
+                modalImg.style.transform = `scale(${currentScale})`;
+                e.preventDefault();
+            }
+            lastTap = currentTime;
+        });
+
+        function resetZoom() { currentScale = 1; modalImg.style.transform = 'scale(1)'; }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(`${id}-icon`);
+            content.classList.toggle('open');
+            icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function copyToClipboard(text) {
+            const temp = document.createElement('input');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`계좌번호(${text})가 복사되었습니다.`);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
+            }, 2500);
+        }
+
+        const WEDDING_DATE = new Date(2027, 3, 10, 13, 20, 0);
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const title = document.getElementById('calendar-title');
+            if (!grid || !title) return;
+            title.textContent = '2027. 04';
+            grid.innerHTML = '';
+            
+            const firstDayIndex = new Date(2027, 3, 1).getDay();
+            const totalDays = new Date(2027, 4, 0).getDate();
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                grid.appendChild(Object.assign(document.createElement('div'), { className: 'h-9' }));
+            }
+            for (let day = 1; day <= totalDays; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'h-9 flex items-center justify-center relative font-light text-slate-700 text-sm';
+                if (day === 10) {
+                    dayEl.innerHTML = `<span class="relative z-10 font-bold text-white">${day}</span><span class="absolute inset-0 m-auto w-8 h-8 bg-[#C5A880] rounded-full flex items-center justify-center animate-pulse shadow-md"></span>`;
+                } else {
+                    dayEl.textContent = day;
+                }
+                grid.appendChild(dayEl);
+            }
+        }
+
+        function updateCountdown() {
+            const diff = WEDDING_DATE - new Date();
+            const counterEl = document.getElementById('d-day-counter');
+            if (!counterEl) return;
+            
+            if (diff <= 0) { 
+                counterEl.textContent = "오늘이 바로 수한 ♥ 혜정의 결혼식 날입니다"; 
+                return; 
+            }
+            
+            const d = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            counterEl.textContent = `수한 ♥ 혜정의 결혼식이 D-${d}일 남았습니다`;
+        }
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('dragstart', e => e.preventDefault());
+
+        // 페이지 로드시 지도 및 모든 기능 실행
+        window.onload = function() {
+            initKakaoMap();
+            animateConfetti();
+            triggerInitialConfetti();
+            renderCalendar();
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        };
+    </script>
+</body>
+</html>

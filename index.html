@@ -7,16 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* 메인 이름(수한 & 혜정) 전용 세련된 명조 서체 및 계좌 박스 투명화 */
         .couple-name-style {
             font-family: 'Nanum Myeongjo', serif;
             font-weight: 700;
             letter-spacing: 0.05em;
-        }
-        .account-box {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
         }
     </style>
 
@@ -30,7 +24,7 @@
     <meta property="og:image" content="https://270410-wedding-invitation.vercel.app//photo.jpg">
     <meta property="og:url" content="https://270410-wedding-invitation.vercel.app/">
 
-    <!-- 카카오맵 SDK (autoload=false 적용) -->
+    <!-- 카카오맵 SDK -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=517e43dc3921658cba637633d306611c&autoload=false"></script>
 
     <title>수한 & 혜정의 결혼식에 초대합니다</title>
@@ -107,7 +101,7 @@
 
     <main class="w-full max-w-[480px] min-h-screen bg-[#FAF8F5] shadow-2xl relative overflow-hidden flex flex-col">
 
-        <!-- [1. 메인 히어로 & 아치 프레임 & 폭죽 버튼] (중복 제거 및 서체 적용) -->
+         <!-- [1. 메인 히어로 & 아치 프레임 & 폭죽 버튼] -->
         <section class="relative pt-10 pb-16 px-6 flex flex-col items-center text-center">
             <p class="font-cinzel text-xs tracking-[0.3em] text-gold font-semibold uppercase mb-4">The Marriage of</p>
             <h1 class="font-serif text-3xl text-charcoal font-light mb-6 tracking-wide couple-name-style">수한 <span class="text-gold font-normal">&</span> 혜정</h1>
@@ -159,7 +153,7 @@
             <div class="w-8 h-[1px] bg-gold mx-auto mt-10"></div>
         </section>
 
-         <!-- [3. 갤러리 (GALLERY)] -->
+                <!-- [3. 갤러리 (GALLERY)] -->
         <section id="gallery-section" class="py-16 px-6 text-center">
             <h2 class="font-cinzel text-xs tracking-[0.25em] text-gold uppercase mb-2">GALLERY</h2>
             <p class="text-xs text-sub-gray mb-8 font-light">소중한 순간들을 담았습니다</p>
@@ -236,7 +230,7 @@
             </div>
         </section>
 
-                <!-- [5. 오시는 길 (LOCATION) & 계좌 (ACCOUNT) - 박스 제거 및 부모님 계좌 포함] -->
+                <!-- [5. 오시는 길 (LOCATION) & 계좌 (ACCOUNT)] -->
         <section class="py-16 px-6 text-center">
             <h2 class="font-cinzel text-xs tracking-[0.25em] text-gold uppercase mb-2">LOCATION</h2>
             <p class="font-serif text-base text-charcoal font-medium">송도 메리빌리아</p>
@@ -261,67 +255,67 @@
             <p class="text-xs text-sub-gray mb-8 font-light">마음 전하실 곳</p>
 
             <div class="space-y-4 max-w-[400px] mx-auto text-left">
-                <!-- 신랑측 계좌 (박스 없음) -->
-                <div class="border-b border-stone-200 pb-4">
-                    <button onclick="toggleAccordion('groom-account')" class="w-full px-2 py-3 flex items-center justify-between text-sm font-medium text-charcoal hover:bg-cream-dark/20 transition-all">
+                <!-- 신랑측 계좌 -->
+                <div class="bg-white rounded-2xl border border-gold-light/50 overflow-hidden shadow-sm">
+                    <button onclick="toggleAccordion('groom-account')" class="w-full px-6 py-4 flex items-center justify-between text-sm font-medium text-charcoal hover:bg-cream-dark/20 transition-all">
                         <span>신랑측 계좌번호</span>
                         <i id="groom-account-icon" class="fa-solid fa-chevron-down text-xs text-gold transition-transform duration-300"></i>
                     </button>
-                    <div id="groom-account" class="accordion-content px-2 pt-2">
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between bg-stone-50 p-3.5 rounded-xl border border-stone-200 shadow-xs">
+                    <div id="groom-account" class="accordion-content px-6 bg-cream/30 border-t border-gold-light/20">
+                        <div class="py-5 space-y-3">
+                            <div class="flex items-center justify-between bg-white p-3.5 rounded-xl border border-gold-light/30 shadow-xs">
                                 <div class="flex flex-col">
                                     <span class="text-[11px] text-sub-gray">신랑 수한</span>
                                     <span class="text-xs font-medium text-charcoal">신한 110-123-456789</span>
                                 </div>
-                                <button onclick="copyToClipboard('110-123-456789')" class="px-3 py-1.5 bg-white border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
+                                <button onclick="copyToClipboard('110-123-456789')" class="px-3 py-1.5 bg-cream-dark border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
                             </div>
-                            <div class="flex items-center justify-between bg-stone-50 p-3.5 rounded-xl border border-stone-200 shadow-xs">
+                            <div class="flex items-center justify-between bg-white p-3.5 rounded-xl border border-gold-light/30 shadow-xs">
                                 <div class="flex flex-col">
                                     <span class="text-[11px] text-sub-gray">혼주 (아버지) 윤아버지</span>
                                     <span class="text-xs font-medium text-charcoal">국민은행 123-456-78-901234</span>
                                 </div>
-                                <button onclick="copyToClipboard('123-456-78-901234')" class="px-3 py-1.5 bg-white border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
+                                <button onclick="copyToClipboard('123-456-78-901234')" class="px-3 py-1.5 bg-cream-dark border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
                             </div>
-                            <div class="flex items-center justify-between bg-stone-50 p-3.5 rounded-xl border border-stone-200 shadow-xs">
+                            <div class="flex items-center justify-between bg-white p-3.5 rounded-xl border border-gold-light/30 shadow-xs">
                                 <div class="flex flex-col">
                                     <span class="text-[11px] text-sub-gray">혼주 (어머니) 김어머니</span>
                                     <span class="text-xs font-medium text-charcoal">우리은행 1002-123-456789</span>
                                 </div>
-                                <button onclick="copyToClipboard('1002-123-456789')" class="px-3 py-1.5 bg-white border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
+                                <button onclick="copyToClipboard('1002-123-456789')" class="px-3 py-1.5 bg-cream-dark border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 신부측 계좌 (박스 없음) -->
-                <div class="border-b border-stone-200 pb-4">
-                    <button onclick="toggleAccordion('bride-account')" class="w-full px-2 py-3 flex items-center justify-between text-sm font-medium text-charcoal hover:bg-cream-dark/20 transition-all">
+                <!-- 신부측 계좌 -->
+                <div class="bg-white rounded-2xl border border-gold-light/50 overflow-hidden shadow-sm">
+                    <button onclick="toggleAccordion('bride-account')" class="w-full px-6 py-4 flex items-center justify-between text-sm font-medium text-charcoal hover:bg-cream-dark/20 transition-all">
                         <span>신부측 계좌번호</span>
                         <i id="bride-account-icon" class="fa-solid fa-chevron-down text-xs text-gold transition-transform duration-300"></i>
                     </button>
-                    <div id="bride-account" class="accordion-content px-2 pt-2">
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between bg-stone-50 p-3.5 rounded-xl border border-stone-200 shadow-xs">
+                    <div id="bride-account" class="accordion-content px-6 bg-cream/30 border-t border-gold-light/20">
+                        <div class="py-5 space-y-3">
+                            <div class="flex items-center justify-between bg-white p-3.5 rounded-xl border border-gold-light/30 shadow-xs">
                                 <div class="flex flex-col">
                                     <span class="text-[11px] text-sub-gray">신부 혜정</span>
                                     <span class="text-xs font-medium text-charcoal">카카오뱅크 3333-01-9876543</span>
                                 </div>
-                                <button onclick="copyToClipboard('3333-01-9876543')" class="px-3 py-1.5 bg-white border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
+                                <button onclick="copyToClipboard('3333-01-9876543')" class="px-3 py-1.5 bg-cream-dark border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
                             </div>
-                            <div class="flex items-center justify-between bg-stone-50 p-3.5 rounded-xl border border-stone-200 shadow-xs">
+                            <div class="flex items-center justify-between bg-white p-3.5 rounded-xl border border-gold-light/30 shadow-xs">
                                 <div class="flex flex-col">
                                     <span class="text-[11px] text-sub-gray">혼주 (아버지) 장아버지</span>
                                     <span class="text-xs font-medium text-charcoal">농협 352-1234-5678-90</span>
                                 </div>
-                                <button onclick="copyToClipboard('352-1234-5678-90')" class="px-3 py-1.5 bg-white border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
+                                <button onclick="copyToClipboard('352-1234-5678-90')" class="px-3 py-1.5 bg-cream-dark border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
                             </div>
-                            <div class="flex items-center justify-between bg-stone-50 p-3.5 rounded-xl border border-stone-200 shadow-xs">
+                            <div class="flex items-center justify-between bg-white p-3.5 rounded-xl border border-gold-light/30 shadow-xs">
                                 <div class="flex flex-col">
                                     <span class="text-[11px] text-sub-gray">혼주 (어머니) 김어머니</span>
                                     <span class="text-xs font-medium text-charcoal">기업은행 010-1234-5678</span>
                                 </div>
-                                <button onclick="copyToClipboard('010-1234-5678')" class="px-3 py-1.5 bg-white border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
+                                <button onclick="copyToClipboard('010-1234-5678')" class="px-3 py-1.5 bg-cream-dark border border-gold/40 rounded-lg text-xs font-medium text-gold-dark hover:bg-gold hover:text-white transition-all">복사</button>
                             </div>
                         </div>
                     </div>
@@ -347,4 +341,301 @@
         </section>
     </main>
 
-    
+        <script>
+        // 카카오 지도 정상 로드 및 렌더링 함수
+        function initKakaoMap() {
+            const container = document.getElementById('map');
+            if (!container) return;
+            
+            kakao.maps.load(function() {
+                const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+                const options = {
+                    center: latLng,
+                    level: 3
+                };
+                
+                const map = new kakao.maps.Map(container, options);
+                const marker = new kakao.maps.Marker({
+                    position: latLng
+                });
+                marker.setMap(map);
+
+                setTimeout(function() {
+                    map.relayout();
+                    map.setCenter(latLng);
+                }, 300);
+            });
+        }
+
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const heartEmojis = ['💙', '🖤', '💖'];
+        let particles = [];
+
+        class HeartParticle {
+            constructor(x, y, isUpwardBurst = false) {
+                this.x = x;
+                this.y = y;
+                this.emoji = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                this.size = Math.random() * 16 + 18;
+                this.opacity = 1;
+                this.fade = Math.random() * 0.015 + 0.008;
+
+                if (isUpwardBurst) {
+                    const angle = (Math.random() * 60 + 60) * (Math.PI / 180); 
+                    const speed = Math.random() * 14 + 10; 
+                    this.vx = -Math.cos(angle) * (Math.random() > 0.5 ? 1 : -1) * (speed * 0.6);
+                    this.vy = -Math.sin(angle) * speed; 
+                    this.gravity = 0.35;
+                } else {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 8 + 3;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                    this.gravity = 0.15;
+                }
+                this.rotation = Math.random() * Math.PI;
+                this.vRot = (Math.random() - 0.5) * 0.1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravity; 
+                this.opacity -= this.fade;
+                this.rotation += this.vRot;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(this.opacity, 0);
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.font = `${this.size}px serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.emoji, 0, 0);
+                ctx.restore();
+            }
+        }
+
+        function triggerInitialConfetti() {
+            for (let i = 0; i < 45; i++) {
+                particles.push(new HeartParticle(width / 2, height / 3, false));
+            }
+        }
+
+        function triggerButtonConfetti(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            for (let i = 0; i < 50; i++) {
+                particles.push(new HeartParticle(rect.left + rect.width / 2, rect.top, true));
+            }
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].opacity <= 0) particles.splice(i, 1);
+            }
+            requestAnimationFrame(animateConfetti);
+        }
+
+        let isGalleryExpanded = false;
+        function toggleGallery() {
+            const extraPhotos = document.querySelectorAll('.extra-photo');
+            const btnText = document.getElementById('gallery-btn-text');
+            const btnIcon = document.getElementById('gallery-btn-icon');
+            const gallerySection = document.getElementById('gallery-section');
+
+            if (!isGalleryExpanded) {
+                extraPhotos.forEach(el => el.classList.remove('hidden'));
+                btnText.textContent = '사진 접기';
+                btnIcon.className = 'fa-solid fa-chevron-up text-[10px] text-gold';
+                isGalleryExpanded = true;
+            } else {
+                gallerySection.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => {
+                    extraPhotos.forEach(el => el.classList.add('hidden'));
+                    btnText.textContent = '사진 더보기';
+                    btnIcon.className = 'fa-solid fa-chevron-down text-[10px] text-gold';
+                    isGalleryExpanded = false;
+                }, 300);
+            }
+        }
+
+        const galleryImages = [
+            "photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", 
+            "photo6.jpg", "photo7.jpg", "photo8.jpg", "photo9.jpg", "photo10.jpg", 
+            "photo11.jpg", "photo12.jpg", "photo13.jpg", "photo14.jpg", "photo15.jpg"
+        ];
+        let currentImgIdx = 0;
+        const modal = document.getElementById('gallery-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalCounter = document.getElementById('modal-counter');
+        const thumbnailStrip = document.getElementById('thumbnail-strip');
+
+        function initThumbnailStrip() {
+            thumbnailStrip.innerHTML = '';
+            galleryImages.forEach((imgUrl, index) => {
+                const thumb = document.createElement('img');
+                thumb.src = imgUrl;
+                thumb.className = `w-12 h-12 object-cover rounded-md cursor-pointer border-2 transition-all flex-shrink-0 ${index === currentImgIdx ? 'border-gold scale-105' : 'border-transparent opacity-60'}`;
+                thumb.onclick = () => showModalImg(index);
+                thumbnailStrip.appendChild(thumb);
+            });
+        }
+
+        function openModal(index) {
+            currentImgIdx = index;
+            initThumbnailStrip();
+            showModalImg(index);
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            resetZoom();
+        }
+
+        function showModalImg(index) {
+            currentImgIdx = index;
+            modalImg.src = galleryImages[index];
+            modalCounter.textContent = `${index + 1} / ${galleryImages.length}`;
+            resetZoom();
+
+            const thumbs = thumbnailStrip.children;
+            Array.from(thumbs).forEach((thumb, idx) => {
+                if (idx === index) {
+                    thumb.className = 'w-12 h-12 object-cover rounded-md cursor-pointer border-2 border-gold scale-105 opacity-100 flex-shrink-0';
+                    thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                } else {
+                    thumb.className = 'w-12 h-12 object-cover rounded-md cursor-pointer border-2 border-transparent opacity-60 flex-shrink-0';
+                }
+            });
+        }
+
+        function nextModalImg() { currentImgIdx = (currentImgIdx + 1) % galleryImages.length; showModalImg(currentImgIdx); }
+        function prevModalImg() { currentImgIdx = (currentImgIdx - 1 + galleryImages.length) % galleryImages.length; showModalImg(currentImgIdx); }
+
+        let touchStartX = 0, touchEndX = 0;
+        const touchArea = document.getElementById('modal-touch-area');
+        touchArea.addEventListener('touchstart', e => { if (e.touches.length === 1) touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        touchArea.addEventListener('touchend', e => {
+            if (e.changedTouches.length === 1 && currentScale === 1) {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchEndX - touchStartX;
+                if (Math.abs(diff) > 40) { diff < 0 ? nextModalImg() : prevModalImg(); }
+            }
+        }, { passive: true });
+
+        let currentScale = 1, lastTap = 0;
+        touchArea.addEventListener('touchend', e => {
+            const currentTime = new Date().getTime();
+            if (currentTime - lastTap < 300 && currentTime - lastTap > 0) {
+                currentScale = currentScale > 1 ? 1 : 2;
+                modalImg.style.transform = `scale(${currentScale})`;
+                e.preventDefault();
+            }
+            lastTap = currentTime;
+        });
+
+        function resetZoom() { currentScale = 1; modalImg.style.transform = 'scale(1)'; }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(`${id}-icon`);
+            content.classList.toggle('open');
+            icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function copyToClipboard(text) {
+            const temp = document.createElement('input');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`계좌번호(${text})가 복사되었습니다.`);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
+            }, 2500);
+        }
+
+        const WEDDING_DATE = new Date(2027, 3, 10, 13, 20, 0);
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const title = document.getElementById('calendar-title');
+            if (!grid || !title) return;
+            title.textContent = '2027. 04';
+            grid.innerHTML = '';
+            
+            const firstDayIndex = new Date(2027, 3, 1).getDay();
+            const totalDays = new Date(2027, 4, 0).getDate();
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                grid.appendChild(Object.assign(document.createElement('div'), { className: 'h-9' }));
+            }
+            for (let day = 1; day <= totalDays; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'h-9 flex items-center justify-center relative font-light text-slate-700 text-sm';
+                if (day === 10) {
+                    dayEl.innerHTML = `<span class="relative z-10 font-bold text-white">${day}</span><span class="absolute inset-0 m-auto w-8 h-8 bg-[#C5A880] rounded-full flex items-center justify-center animate-pulse shadow-md"></span>`;
+                } else {
+                    dayEl.textContent = day;
+                }
+                grid.appendChild(dayEl);
+            }
+        }
+
+        function updateCountdown() {
+            const diff = WEDDING_DATE - new Date();
+            const counterEl = document.getElementById('d-day-counter');
+            if (!counterEl) return;
+            
+            if (diff <= 0) { 
+                counterEl.textContent = "오늘이 바로 수한 ♥ 혜정의 결혼식 날입니다"; 
+                return; 
+            }
+            
+            const d = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            counterEl.textContent = `수한 ♥ 혜정의 결혼식이 D-${d}일 남았습니다`;
+        }
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('dragstart', e => e.preventDefault());
+
+        window.onload = function() {
+            try {
+                initKakaoMap();
+            } catch (e) {
+                console.error("카카오 지도 로드 실패:", e);
+            }
+            
+            animateConfetti();
+            triggerInitialConfetti();
+            renderCalendar();
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        };
+    </script>
+</body>
+</html>
+

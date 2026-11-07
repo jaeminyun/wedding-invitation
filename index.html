@@ -1,20 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 
-{
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
-    }
-  ]
-}
-
 <head>
     <!-- 구글 폰트 (나눔명조/Cinzel) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -363,7 +349,8 @@
     if (!container) return;
 
     kakao.maps.load(function() {
-        const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+        // 송도 메리빌리아 정확한 위치 좌표
+        const latLng = new kakao.maps.LatLng(37.3805, 126.6568);
         const options = {
             center: latLng,
             level: 3
@@ -371,13 +358,13 @@
         
         const map = new kakao.maps.Map(container, options);
 
-        // 1. 깨짐(엑박) 없는 카카오 지도 기본 마커(핀) 생성
+        // 1. 깨짐 없는 카카오 기본 마커(핀)
         const marker = new kakao.maps.Marker({
             position: latLng,
             map: map
         });
 
-        // 2. 핀 바로 위에 위치하는 '송도 메리빌리아' 라벨 오버레이
+        // 2. 핀 위에 딱 맞게 올라가는 라벨
         const overlayContent = `
             <div style="padding:6px 12px; background:#2C2A29; color:#ffffff; border-radius:8px; font-size:11px; font-weight:600; box-shadow:0 3px 8px rgba(0,0,0,0.3); text-align:center; white-space:nowrap; border: 1px solid rgba(197,168,128,0.4); margin-bottom:70px;">
                 📍 송도 메리빌리아
@@ -391,15 +378,12 @@
         });
         customOverlay.setMap(map);
 
-        // 화면 크기나 모바일 환경에서 중심 좌표가 틀어지는 현상 방지
         setTimeout(function() {
             map.relayout();
             map.setCenter(latLng);
         }, 300);
     });
 }
-
-
 
 
         const canvas = document.getElementById('confetti-canvas');

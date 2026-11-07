@@ -430,11 +430,11 @@ customOverlay.setMap(map);
                 this.fade = Math.random() * 0.015 + 0.008;
 
                 if (isUpwardBurst) {
-                    // [수정] 오른쪽에서 왼쪽 위(-X 방향)로 비스듬히 뻗어가도록 각도와 x축 벡터 수정
-                    const angle = (Math.random() * 30 + 55) * (Math.PI / 180); 
-                    const speed = Math.random() * 12 + 8; 
-                    this.vx = -Math.cos(angle) * speed - 2; // 음수(-)를 주어 확실하게 왼쪽 위로 향하게 합니다
-                    this.vy = -Math.sin(angle) * speed; 
+                    // [수정] 오른쪽 아래 버튼에서 시작해 왼쪽 위~오른쪽 넓은 각도로 부채꼴 분산
+                    const angle = (Math.random() * 110 + 20) * (Math.PI / 180); // 20도 ~ 130도 사이의 넓은 각도
+                    const speed = Math.random() * 12 + 6; 
+                    this.vx = -Math.cos(angle) * speed; // 좌우로 균일하게 퍼지도록 수정
+                    this.vy = -Math.sin(angle) * speed; // 위로 솟구치는 힘
                     this.gravity = 0.35;
                 } else {
                     const angle = Math.random() * Math.PI * 2;
@@ -446,6 +446,7 @@ customOverlay.setMap(map);
                 this.rotation = Math.random() * Math.PI;
                 this.vRot = (Math.random() - 0.5) * 0.1;
             }
+
 
             update() {
                 this.x += this.vx;

@@ -379,15 +379,23 @@
             
             const map = new kakao.maps.Map(container, options);
 
-            // 카카오 공식 기본 마커 생성
+            // 카카오 공식 단독 핀 이미지 주소 및 규격 설정
+            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png',
+                imageSize = new kakao.maps.Size(30, 44),
+                imageOption = { offset: new kakao.maps.Point(15, 44) }; // 핀 바닥 끝지점을 좌표와 일치시킴
+
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+            // 마커 생성 및 이미지 적용
             var marker = new kakao.maps.Marker({
-                position: latLng
+                position: latLng,
+                image: markerImage
             });
 
             // 지도 위에 마커 표시
             marker.setMap(map);
 
-            // 지도 크기 및 중심 재조정
+            // 지도 레이아웃 재조정 (모바일 렌더링 안전장치)
             setTimeout(function() {
                 map.relayout();
                 map.setCenter(latLng);
@@ -405,7 +413,7 @@
             height = canvas.height = window.innerHeight;
         });
 
-        const heartEmojis = ['💙', '🖤', '🤍'];
+            const heartEmojis = ['💙', '💙', '🖤', '🤍', '🤍'];
         let particles = [];
 
         class HeartParticle {
@@ -418,12 +426,12 @@
                 this.fade = Math.random() * 0.015 + 0.008;
 
                 if (isUpwardBurst) {
-                    // [수정] 오른쪽 아래 버튼에서 시작해 왼쪽 위~오른쪽 넓은 각도로 부채꼴 분산
-                    const angle = (Math.random() * 110 + 20) * (Math.PI / 180); // 20도 ~ 130도 사이의 넓은 각도
-                    const speed = Math.random() * 12 + 6; 
-                    this.vx = -Math.cos(angle) * speed; // 좌우로 균일하게 퍼지도록 수정
-                    this.vy = -Math.sin(angle) * speed; // 위로 솟구치는 힘
-                    this.gravity = 0.35;
+                    // [수정] 버튼 클릭 시 더 높고 시원하게 솟구치도록 속도 상향 및 중력 조절
+                    const angle = (Math.random() * 110 + 20) * (Math.PI / 180); 
+                    const speed = Math.random() * 16 + 8; // 기존보다 속도 범위 상향 (6~18 -> 8~24)
+                    this.vx = -Math.cos(angle) * speed; 
+                    this.vy = -Math.sin(angle) * speed; 
+                    this.gravity = 0.28; // 중력을 낮춰서 더 높이 올라가도록 수정
                 } else {
                     const angle = Math.random() * Math.PI * 2;
                     const speed = Math.random() * 8 + 3;
@@ -478,6 +486,7 @@
             }
             requestAnimationFrame(animateConfetti);
         }
+
 
         let isGalleryExpanded = false;
         function toggleGallery() {

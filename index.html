@@ -356,17 +356,16 @@
 
     </main>
 
-   <div id="map" style="width:100%; height:350px; position:relative;"></div>
-
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY"></script>
+   <div style="width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden;">
+    <div id="map" style="width: 100%; height: 350px; position: relative;"></div>
+</div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById('map');
     if (!container) return;
 
     kakao.maps.load(function() {
-        // 1. 송도 메리빌리아 셀레스메리홀 건물 정중앙 정확한 좌표
         const latLng = new kakao.maps.LatLng(37.38138, 126.65990);
         
         const options = {
@@ -376,17 +375,11 @@
         
         const map = new kakao.maps.Map(container, options);
 
-        // 2. 투명 배경 표준 스팟 이미지 (흰색 네모 박스/테두리 아티팩트 0%)
         const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; 
         const imageSize = new kakao.maps.Size(24, 35);
-        
-        // 3. 핀의 뾰족한 하단 끝부분이 정확히 해당 위경도 건물에 꽂히도록 앵커 설정
-        const imageOption = { 
-            offset: new kakao.maps.Point(12, 35) 
-        };
+        const imageOption = { offset: new kakao.maps.Point(12, 35) };
 
         const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
         const marker = new kakao.maps.Marker({
             position: latLng,
             image: markerImage
@@ -394,16 +387,14 @@
 
         marker.setMap(map);
 
-        // 4. 지도를 확대/축소(Zoom)하거나 패닝(Pan)해도 위치가 절대 틀어지지 않도록 고정 동기화
         kakao.maps.event.addListener(map, 'zoom_changed', function() {
             marker.setPosition(latLng);
         });
 
-        // 5. 모바일 웹뷰/브라우저 렌더링 타이밍 이슈 완전 방지
         setTimeout(function() {
             map.relayout();
             map.setCenter(latLng);
-        }, 200);
+        }, 300);
     });
 });
 

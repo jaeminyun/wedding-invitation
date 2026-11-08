@@ -353,10 +353,10 @@
             </div>
             <div class="mt-12 text-[10px] text-sub-gray/60 font-cinzel tracking-widest">THANK YOU FOR CELEBRATING WITH US</div>
         </section>
+        
     </main>
 
    <style>
-  /* 카카오 기본 오버레이의 흰색 배경/테두리/그림자를 강제로 완전히 제거 */
   .custom-kakao-pin,
   .custom-kakao-pin * {
     background: transparent !important;
@@ -372,7 +372,8 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!container) return;
 
     kakao.maps.load(function() {
-        const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+        // 송도 메리빌리아 실제 정확한 건물 좌표
+        const latLng = new kakao.maps.LatLng(37.38075, 126.65769);
         const options = {
             center: latLng,
             level: 3
@@ -380,29 +381,19 @@ document.addEventListener("DOMContentLoaded", function() {
         
         const map = new kakao.maps.Map(container, options);
 
-        // 1. 순수 SVG 마커 생성 (추가 래퍼 div 없이 크기 36x48 정의)
         const content = document.createElement('div');
         content.className = 'custom-kakao-pin';
         content.style.cssText = "width: 36px; height: 48px; display: block; position: absolute;";
         
-        // 원하시는 바로 그 디자인: 파란 물방울 + 하얀 원 + 하향 삼각형
         content.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="48" viewBox="0 0 24 32" style="display: block; overflow: visible;">
-                <!-- 바닥 그림자 -->
                 <ellipse cx="12" cy="31" rx="4" ry="1.5" fill="rgba(0,0,0,0.25)"/>
-                <!-- 파란색 핀 본체 (흰색 겉 테두리) -->
                 <path d="M12 0C5.373 0 0 5.373 0 12c0 7.5 12 19 12 19s12-11.5 12-19c0-6.627-5.373-12-12-12z" fill="#2563EB" stroke="#FFFFFF" stroke-width="1.2"/>
-                <!-- 중앙 흰색 원 -->
                 <circle cx="12" cy="11.5" r="4.8" fill="#FFFFFF"/>
-                <!-- 흰색 원 내부의 아래 방향 파란 삼각형 -->
                 <polygon points="12,14.2 9.2,10.2 14.8,10.2" fill="#2563EB"/>
             </svg>
         `;
 
-        // 2. 카카오 API 앵커 설정
-        // xAnchor: 0.5 (가로 중앙)
-        // yAnchor: 1.0 (세로 맨 아래 = 핀의 뾰족한 팁)
-        // CSS transform을 쓰지 않고 카카오 API 앵커만 지정해야 지도 축소 시 좌표가 안 틀어집니다.
         const customOverlay = new kakao.maps.CustomOverlay({
             position: latLng,
             content: content,
@@ -412,13 +403,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
         customOverlay.setMap(map);
 
-        // 3. 모바일/웹 렌더링 시 지도 센터 재설정
         setTimeout(function() {
             map.relayout();
             map.setCenter(latLng);
         }, 300);
     });
 });
+
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;

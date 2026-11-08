@@ -119,7 +119,6 @@
             <p class="font-cinzel text-xs tracking-[0.3em] text-gold font-semibold uppercase mb-4">The Marriage of</p>
             <h1 class="text-charcoal mb-6 couple-name-style">수한 &amp; 혜정</h1>
 
-
             <div class="relative w-full max-w-[340px] aspect-[3/4] rounded-t-[170px] rounded-b-2xl overflow-hidden shadow-xl border-4 border-white mb-8 group">
                 <img src="photo.jpg" alt="웨딩 대표 사진" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
@@ -167,7 +166,7 @@
             <div class="w-8 h-[1px] bg-gold mx-auto mt-10"></div>
         </section>
 
-           <!-- [3. 갤러리 (GALLERY)] -->
+        <!-- [3. 갤러리 (GALLERY)] -->
         <section id="gallery-section" class="py-16 px-6 text-center">
             <h2 class="font-cinzel text-xs tracking-[0.25em] text-gold uppercase mb-2">GALLERY</h2>
             <p class="text-xs text-sub-gray mb-8 font-light">소중한 순간들을 담았습니다</p>
@@ -223,7 +222,7 @@
             <div id="thumbnail-strip" class="flex gap-2 overflow-x-auto py-2 px-1 scrollbar-none justify-start sm:justify-center z-10"></div>
         </div>
 
-                <!-- [4. 캘린더 & D-Day 카운트다운] -->
+        <!-- [4. 캘린더 & D-Day 카운트다운] -->
         <section class="px-6 py-8">
             <div class="bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-[#C5A880]/20 text-center">
                 <h3 class="font-cinzel text-sm tracking-[0.2em] text-[#8C7355] mb-4">CALENDAR</h3>
@@ -250,7 +249,10 @@
             <p class="font-serif text-base text-charcoal font-medium">송도 메리빌리아</p>
             <p class="text-xs text-sub-gray font-light mt-1 mb-6">인천 연수구 컨벤시아대로 391 (송도동 174-3)</p>
 
-            <div id="map" class="w-full aspect-[4/3] bg-cream-dark rounded-2xl overflow-hidden shadow-sm border relative border-gold-light/40 mb-6 flex flex-col items-center justify-center"></div>
+            <!-- [수정됨] main 태그 내부로 들어와 찌그러짐을 완벽히 방지하는 지도 영역 -->
+            <div style="width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden;" class="mb-6">
+                <div id="map" style="width: 100%; height: 350px; position: relative;" class="bg-cream-dark rounded-2xl shadow-sm border border-gold-light/40"></div>
+            </div>
 
             <div class="grid grid-cols-2 gap-3 mb-16">
                 <a href="https://naver.me/5FmSJ8Gu" target="_blank" class="py-3 px-4 bg-white border border-gold-light/60 rounded-xl text-xs font-medium text-charcoal shadow-sm flex items-center justify-center gap-2 hover:bg-cream-dark/30 transition-all">
@@ -337,7 +339,7 @@
             </div>
         </section>
 
-        <!-- [6. 감사의 글 (THANK YOU)] -->
+            <!-- [6. 감사의 글 (THANK YOU)] -->
         <section class="py-16 px-6 bg-cream-dark/30 text-center">
             <div class="bg-white rounded-3xl p-8 border border-gold-light/40 shadow-sm max-w-[380px] mx-auto space-y-6">
                 <i class="fa-solid fa-heart text-gold text-lg"></i>
@@ -356,48 +358,49 @@
 
     </main>
 
-   <div style="width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden;">
-    <div id="map" style="width: 100%; height: 350px; position: relative;"></div>
-</div>
+    <!-- 카카오맵 초기화 및 네모 박스 없는 핀 고정 스크립트 -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const container = document.getElementById('map');
+        if (!container) return;
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const container = document.getElementById('map');
-    if (!container) return;
+        kakao.maps.load(function() {
+            const latLng = new kakao.maps.LatLng(37.38138, 126.65990);
+            
+            const options = {
+                center: latLng,
+                level: 3
+            };
+            
+            const map = new kakao.maps.Map(container, options);
 
-    kakao.maps.load(function() {
-        const latLng = new kakao.maps.LatLng(37.38138, 126.65990);
-        
-        const options = {
-            center: latLng,
-            level: 3
-        };
-        
-        const map = new kakao.maps.Map(container, options);
+            // 투명 배경 표준 스팟 이미지 (흰색 네모 박스 0%)
+            const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; 
+            const imageSize = new kakao.maps.Size(24, 35);
+            const imageOption = { offset: new kakao.maps.Point(12, 35) };
 
-        const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; 
-        const imageSize = new kakao.maps.Size(24, 35);
-        const imageOption = { offset: new kakao.maps.Point(12, 35) };
+            const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            const marker = new kakao.maps.Marker({
+                position: latLng,
+                image: markerImage
+            });
 
-        const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-        const marker = new kakao.maps.Marker({
-            position: latLng,
-            image: markerImage
+            marker.setMap(map);
+
+            // 확대/축소 시 핀 위치 이탈 완전 방지
+            kakao.maps.event.addListener(map, 'zoom_changed', function() {
+                marker.setPosition(latLng);
+            });
+
+            setTimeout(function() {
+                map.relayout();
+                map.setCenter(latLng);
+            }, 300);
         });
-
-        marker.setMap(map);
-
-        kakao.maps.event.addListener(map, 'zoom_changed', function() {
-            marker.setPosition(latLng);
-        });
-
-        setTimeout(function() {
-            map.relayout();
-            map.setCenter(latLng);
-        }, 300);
     });
-});
+    </script>
 
+    <script>
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;

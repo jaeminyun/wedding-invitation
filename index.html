@@ -259,7 +259,7 @@
             <p class="font-serif text-base text-charcoal font-medium">송도 메리빌리아</p>
             <p class="text-xs text-sub-gray font-light mt-1 mb-6">인천 연수구 컨벤시아대로 391 (송도동 174-3)</p>
 
-            <div id="map" class="w-full aspect-[4/3] bg-cream-dark rounded-2xl overflow-hidden shadow-sm border border-gold-light/40 mb-6 flex flex-col items-center justify-center"></div>
+            <div id="map" class="w-full aspect-[4/3] bg-cream-dark rounded-2xl overflow-hidden shadow-sm border relative border-gold-light/40 mb-6 flex flex-col items-center justify-center"></div>
 
             <div class="grid grid-cols-2 gap-3 mb-16">
                 <a href="https://naver.me/5FmSJ8Gu" target="_blank" class="py-3 px-4 bg-white border border-gold-light/60 rounded-xl text-xs font-medium text-charcoal shadow-sm flex items-center justify-center gap-2 hover:bg-cream-dark/30 transition-all">
@@ -365,34 +365,35 @@
     </main>
 
     <script>
-            // 카카오 지도 정상 로드 및 렌더링 함수
-        function initKakaoMap() {
-            const container = document.getElementById('map');
-            if (!container) return;
+    // 카카오 지도 정상 로드 및 렌더링 함수
+    function initKakaoMap() {
+        const container = document.getElementById('map');
+        if (!container) return;
 
-            kakao.maps.load(function() {
-                const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
-                const options = {
-                    center: latLng,
-                    level: 3
-                };
-                
-                const map = new kakao.maps.Map(container, options);
+        kakao.maps.load(function() {
+            const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+            const options = {
+                center: latLng,
+                level: 3
+            };
+            
+            const map = new kakao.maps.Map(container, options);
 
-                // 카카오 기본 마커 생성 (빈 네모 박스가 생기지 않는 표준 설정)
-                const marker = new kakao.maps.Marker({
-                    position: latLng,
-                    map: map // 생성과 동시에 지도에 밀착 마운트
-                });
-
-                // 지도 크기 및 중심 재조정
-                setTimeout(function() {
-                    map.relayout();
-                    map.setCenter(latLng);
-                }, 300);
+            // 카카오 공식 기본 마커 생성
+            var marker = new kakao.maps.Marker({
+                position: latLng
             });
-        }
 
+            // 지도 위에 마커 표시
+            marker.setMap(map);
+
+            // 지도 크기 및 중심 재조정
+            setTimeout(function() {
+                map.relayout();
+                map.setCenter(latLng);
+            }, 300);
+        });
+    }
 
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');

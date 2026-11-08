@@ -378,34 +378,83 @@
             
             const map = new kakao.maps.Map(container, options);
 
-            // 100% 투명 배경 보장용 SVG 깔끔한 파란색 핀
-            const svgPin = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">
-                    <path fill="#2563EB" stroke="#FFFFFF" stroke-width="2" d="M16 2C8.27 2 2 8.27 2 16c0 10.5 14 24 14 24s14-13.5 14-24C30 8.27 23.73 2 16 2z"/>
-                    <circle cx="16" cy="16" r="6" fill="#FFFFFF"/>
-                </svg>
-            `);
+            // 오버레이 컨테이너 생성 및 흰색 배경/테두리 강제 제거 스타일 적용
+            const content = document.createElement('div');
+            content.style.background = 'transparent';
+            content.style.border = 'none';
+            content.style.boxShadow = 'none';
+            content.innerHTML = `
+                <div style="position: relative; transform: translate(-50%, -100%); background: transparent !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.2)); display: block; background: transparent;">
+                        <path fill="#2563EB" stroke="#FFFFFF" stroke-width="2" d="M16 2C8.27 2 2 8.27 2 16c0 10.5 14 24 14 24s14-13.5 14-24C30 8.27 23.73 2 16 2z"/>
+                        <circle cx="16" cy="16" r="6" fill="#FFFFFF"/>
+                    </svg>
+                </div>
+            `;
 
-            var markerImage = new kakao.maps.MarkerImage(
-                svgPin,
-                new kakao.maps.Size(32, 42),
-                { offset: new kakao.maps.Point(16, 42) }
-            );
-
-            var marker = new kakao.maps.Marker({
+            const customOverlay = new kakao.maps.CustomOverlay({
                 position: latLng,
-                image: markerImage
+                content: content,
+                yAnchor: 1
             });
 
-            marker.setMap(map);
+            customOverlay.setMap(map);
 
-            // 모바일 렌더링 위치 보정
             setTimeout(function() {
                 map.relayout();
                 map.setCenter(latLng);
             }, 300);
         });
     }
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const container = document.getElementById('map');
+        if (!container) return;
+
+        kakao.maps.load(function() {
+            const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+            const options = {
+                center: latLng,
+                level: 3
+            };
+            
+            const map = new kakao.maps.Map(container, options);
+
+            const content = document.createElement('div');
+            content.innerHTML = `
+                <div style="position: relative; transform: translate(-50%, -100%);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.2)); display: block;">
+                        <path fill="#2563EB" stroke="#FFFFFF" stroke-width="2" d="M16 2C8.27 2 2 8.27 2 16c0 10.5 14 24 14 24s14-13.5 14-24C30 8.27 23.73 2 16 2z"/>
+                        <circle cx="16" cy="16" r="6" fill="#FFFFFF"/>
+                    </svg>
+                </div>
+            `;
+
+            const customOverlay = new kakao.maps.CustomOverlay({
+                position: latLng,
+                content: content,
+                yAnchor: 1
+            });
+
+            customOverlay.setMap(map);
+
+            setTimeout(function() {
+                map.relayout();
+                map.setCenter(latLng);
+            }, 300);
+        });
+    });
+</script>
+
+<style>
+    /* 카카오맵 오버레이 래퍼의 흰색 배경 제거 */
+    #map div[style*="position: absolute;"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+</style>
 
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');

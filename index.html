@@ -365,38 +365,34 @@
     </main>
 
     <script>
-    // 카카오 지도 정상 로드 및 렌더링 함수
-    function initKakaoMap() {
-        const container = document.getElementById('map');
-        if (!container) return;
+            // 카카오 지도 정상 로드 및 렌더링 함수
+        function initKakaoMap() {
+            const container = document.getElementById('map');
+            if (!container) return;
 
-        kakao.maps.load(function() {
-            const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
-            const options = {
-                center: latLng,
-                level: 3
-            };
-            
-            const map = new kakao.maps.Map(container, options);
+            kakao.maps.load(function() {
+                const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+                const options = {
+                    center: latLng,
+                    level: 3
+                };
+                
+                const map = new kakao.maps.Map(container, options);
 
-            // 1. 위도, 경도 좌표 설정
-            var markerPosition = latLng;
+                // 카카오 기본 마커 생성 (빈 네모 박스가 생기지 않는 표준 설정)
+                const marker = new kakao.maps.Marker({
+                    position: latLng,
+                    map: map // 생성과 동시에 지도에 밀착 마운트
+                });
 
-            // 2. 카카오 공식 기본 마커 생성
-            var marker = new kakao.maps.Marker({
-                position: markerPosition
+                // 지도 크기 및 중심 재조정
+                setTimeout(function() {
+                    map.relayout();
+                    map.setCenter(latLng);
+                }, 300);
             });
+        }
 
-            // 3. 지도 위에 마커 표시
-            marker.setMap(map);
-
-            // 지도 크기 및 중심 재조정
-            setTimeout(function() {
-                map.relayout();
-                map.setCenter(latLng);
-            }, 300);
-        });
-    }
 
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');

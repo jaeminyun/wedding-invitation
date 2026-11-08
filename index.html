@@ -364,47 +364,39 @@
         </section>
     </main>
 
-        <script>
-        // 카카오 지도 정상 로드 및 렌더링 함수
-        function initKakaoMap() {
-    const container = document.getElementById('map');
-    if (!container) return;
+    <script>
+    // 카카오 지도 정상 로드 및 렌더링 함수
+    function initKakaoMap() {
+        const container = document.getElementById('map');
+        if (!container) return;
 
-    kakao.maps.load(function() {
-        const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
-        const options = {
-            center: latLng,
-            level: 3
-        };
-        
-        const map = new kakao.maps.Map(container, options);
+        kakao.maps.load(function() {
+            const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+            const options = {
+                center: latLng,
+                level: 3
+            };
+            
+            const map = new kakao.maps.Map(container, options);
 
-        // 하트 오버레이 핀 (엑박 안 뜨는 HTML/SVG 오버레이)
-const heartContent = `
-    <div style="font-size: 28px; line-height: 1; transform: translate(-50%, -100%); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); cursor: pointer;">
-        ❤️
-    </div>
-`;
+            // 1. 위도, 경도 좌표 설정
+            var markerPosition = latLng;
 
-const customOverlay = new kakao.maps.CustomOverlay({
-    position: latLng,
-    content: heartContent,
-    xAnchor: 0.5,
-    yAnchor: 1
-});
-customOverlay.setMap(map);
+            // 2. 카카오 공식 기본 마커 생성
+            var marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
 
+            // 3. 지도 위에 마커 표시
+            marker.setMap(map);
 
-
-        // 지도 크기 및 중심 재조정
-        setTimeout(function() {
-            map.relayout();
-            map.setCenter(latLng);
-        }, 300);
-    });
-}
-
-
+            // 지도 크기 및 중심 재조정
+            setTimeout(function() {
+                map.relayout();
+                map.setCenter(latLng);
+            }, 300);
+        });
+    }
 
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
@@ -416,7 +408,7 @@ customOverlay.setMap(map);
             height = canvas.height = window.innerHeight;
         });
 
-        const heartEmojis = ['💙', '🖤', '💖'];
+        const heartEmojis = ['💙', '🖤', '🤍'];
         let particles = [];
 
         class HeartParticle {
@@ -627,7 +619,7 @@ customOverlay.setMap(map);
             const title = document.getElementById('calendar-title');
             if (!grid || !title) return;
             title.textContent = '2027. 04';
-            title.style.fontSize = '1.3rem'; // <--- 이 줄을 추가해 주세요! (원하시는 만큼 숫자 조절 가능)
+            title.style.fontSize = '2.0rem'; // <--- 이 줄을 추가해 주세요! (원하시는 만큼 숫자 조절 가능)
             title.style.fontWeight = '600';  /* 약간 두껍게 강조하고 싶다면 추가 */
             grid.innerHTML = '';
             

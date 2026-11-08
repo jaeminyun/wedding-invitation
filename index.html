@@ -357,42 +357,48 @@
 
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const container = document.getElementById('map');
-        if (!container) return;
+    const container = document.getElementById('map');
+    if (!container) return;
 
-        kakao.maps.load(function() {
-            const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
-            const options = {
-                center: latLng,
-                level: 3
-            };
-            
-            const map = new kakao.maps.Map(container, options);
+    kakao.maps.load(function() {
+        const latLng = new kakao.maps.LatLng(37.381387, 126.657597);
+        const options = {
+            center: latLng,
+            level: 3
+        };
+        
+        const map = new kakao.maps.Map(container, options);
 
-            const content = document.createElement('div');
-            content.style.cssText = "background: transparent !important; border: none !important; box-shadow: none !important;";
-            content.innerHTML = `
-                <div style="position: relative; transform: translate(-50%, -100%); background: transparent !important;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="48" viewBox="0 0 24 36" style="filter: drop-shadow(0px 2px 5px rgba(0,0,0,0.25)); display: block; background: transparent;">
-                        <path fill="#2563EB" stroke="#FFFFFF" stroke-width="1.5" d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24c0-6.6-5.4-12-12-12zm0 16.5c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5 4.5 2 4.5 4.5-2 4.5-4.5 4.5z"/>
-                    </svg>
-                </div>
-            `;
+        const content = document.createElement('div');
+        content.style.cssText = "background: transparent !important; border: none !important; box-shadow: none !important;";
+        content.innerHTML = `
+            <div style="position: relative; transform: translate(-50%, -100%); background: transparent !important;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.25)); display: block; background: transparent;">
+                    <ellipse cx="12" cy="20" rx="4" ry="2" fill="rgba(0,0,0,0.2)"/>
+                    <rect x="3" y="4" width="18" height="16" rx="8" fill="#2563EB" stroke="#FFFFFF" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="3.5" fill="#FFFFFF"/>
+                </svg>
+            </div>
+        `;
 
-            const customOverlay = new kakao.maps.CustomOverlay({
-                position: latLng,
-                content: content,
-                yAnchor: 1
-            });
-
-            customOverlay.setMap(map);
-
-            setTimeout(function() {
-                map.relayout();
-                map.setCenter(latLng);
-            }, 300);
+        const customOverlay = new kakao.maps.CustomOverlay({
+            position: latLng,
+            content: content,
+            yAnchor: 1
         });
+
+        customOverlay.setMap(map);
+
+        kakao.maps.event.addListener(map, 'zoom_changed', function() {
+            map.setCenter(latLng);
+        });
+
+        setTimeout(function() {
+            map.relayout();
+            map.setCenter(latLng);
+        }, 300);
     });
+});
 
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');

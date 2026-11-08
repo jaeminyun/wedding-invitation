@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 
-    <head>
-    <!-- 폰트 파일을 최우선으로 즉시 다운로드 시작 -->
-    <link rel="preload" href="./fonts/NanumPenScript.woff" as="font" type="font/woff" crossorigin>
-
-<meta property="og:image" content="https://270410-wedding-invitation.vercel.app/kakao-share.jpg">
 
 <head>
     <!-- 구글 폰트 (나눔명조/Cinzel) -->
@@ -14,18 +9,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
 
     
-    <style>
+        <style>
+        /* 네이버 손편지체 웹폰트 등록 (font-display: block으로 로딩 전 기본체 노출 방지) */
         @font-face {
-            font-family: 'NaverHandLetter';
-            src: url('./fonts/NanumPenScript.woff') format('woff');
+            font-family: 'Sonpyeonji';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_05@1.0/Handletter.woff') format('woff');
             font-weight: normal;
             font-style: normal;
-            /* block: 폰트 로딩될 때까지 텍스트를 숨겨서 기본 폰트(고딕체)가 깜빡이는 현상을 원천 차단합니다 */
-            font-display: block; 
+            font-display: block;
         }
 
+        /* 상단 이름 영역 스타일 */
         .couple-name-style {
-            font-family: 'NaverHandLetter', sans-serif !important;
+            font-family: 'Sonpyeonji', sans-serif !important;
             font-size: 3rem !important;
             font-weight: 400 !important;
             color: #4A4543 !important;
@@ -33,6 +29,9 @@
             line-height: 1.2;
         }
     </style>
+
+
+
 </head>
 
 
@@ -44,7 +43,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="수한 & 혜정의 결혼식에 초대합니다">
     <meta property="og:description" content="2027년 4월 10일 토요일 오후 1:20 | 송도 메리빌리아">
-    <meta property="og:image" content="https://270410-wedding-invitation.vercel.app//photo.jpg">
+    <meta property="og:image" content="https://270410-wedding-invitation.vercel.app/kakao-share.jpg">
     <meta property="og:url" content="https://270410-wedding-invitation.vercel.app/">
 
     <!-- 카카오맵 SDK -->

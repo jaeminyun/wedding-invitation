@@ -365,7 +365,6 @@
     </main>
 
     <script>
-    // 카카오 지도 정상 로드 및 렌더링 함수
     function initKakaoMap() {
         const container = document.getElementById('map');
         if (!container) return;
@@ -379,23 +378,28 @@
             
             const map = new kakao.maps.Map(container, options);
 
-            // 카카오 공식 단독 핀 이미지 주소 및 규격 설정
-            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png',
-                imageSize = new kakao.maps.Size(30, 44),
-                imageOption = { offset: new kakao.maps.Point(15, 44) }; // 핀 바닥 끝지점을 좌표와 일치시킴
+            // 100% 투명 배경 보장용 SVG 깔끔한 파란색 핀
+            const svgPin = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">
+                    <path fill="#2563EB" stroke="#FFFFFF" stroke-width="2" d="M16 2C8.27 2 2 8.27 2 16c0 10.5 14 24 14 24s14-13.5 14-24C30 8.27 23.73 2 16 2z"/>
+                    <circle cx="16" cy="16" r="6" fill="#FFFFFF"/>
+                </svg>
+            `);
 
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            var markerImage = new kakao.maps.MarkerImage(
+                svgPin,
+                new kakao.maps.Size(32, 42),
+                { offset: new kakao.maps.Point(16, 42) }
+            );
 
-            // 마커 생성 및 이미지 적용
             var marker = new kakao.maps.Marker({
                 position: latLng,
                 image: markerImage
             });
 
-            // 지도 위에 마커 표시
             marker.setMap(map);
 
-            // 지도 레이아웃 재조정 (모바일 렌더링 안전장치)
+            // 모바일 렌더링 위치 보정
             setTimeout(function() {
                 map.relayout();
                 map.setCenter(latLng);

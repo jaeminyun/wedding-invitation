@@ -358,25 +358,28 @@
 
     </main>
 
-    <!-- 카카오맵 초기화 및 네모 박스 없는 핀 고정 스크립트 -->
+        <!-- 카카오맵 초기화: 엑스박스 차단 + 핀 완전 고정 + 테크노파크역 조망(level:4) -->
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const container = document.getElementById('map');
         if (!container) return;
 
         kakao.maps.load(function() {
+            // [고정 좌표] 송도 메리빌리아 셀레스메리홀
             const latLng = new kakao.maps.LatLng(37.38138, 126.65990);
             
             const options = {
                 center: latLng,
-                level: 3
+                level: 4 // 테크노파크역 근처까지 한눈에 보이도록 범위 설정
             };
             
             const map = new kakao.maps.Map(container, options);
 
-            // 투명 배경 표준 스팟 이미지 (흰색 네모 박스 0%)
+            // 1. 엑스박스 방지: 검증된 투명 배경 공식 스팟 마커 사용
             const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; 
             const imageSize = new kakao.maps.Size(24, 35);
+            
+            // 2. 핀 절대 고정: 핀 이미지의 하단 뾰족한 끝(12, 35)을 정확한 좌표점 앵커로 지정
             const imageOption = { offset: new kakao.maps.Point(12, 35) };
 
             const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
@@ -387,11 +390,12 @@
 
             marker.setMap(map);
 
-            // 확대/축소 시 핀 위치 이탈 완전 방지
+            // 3. Zoom 축소/확대 시에도 마커 위치가 움직이지 않도록 완전 고정
             kakao.maps.event.addListener(map, 'zoom_changed', function() {
                 marker.setPosition(latLng);
             });
 
+            // 모바일 웹뷰 렌더링 동기화
             setTimeout(function() {
                 map.relayout();
                 map.setCenter(latLng);
@@ -399,6 +403,7 @@
         });
     });
     </script>
+
 
     <script>
         const canvas = document.getElementById('confetti-canvas');

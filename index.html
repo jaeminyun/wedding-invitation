@@ -358,7 +358,7 @@
 
     </main>
 
-               <!-- 카카오맵 최종 완성본: 네모 박스(그림자) 0% + 테크노파크역 조망 뷰 완벽 반영 -->
+                <!-- 카카오맵 최종 해결책: 핀 밑 사각 테두리(그림자/배경 레이어) 물리적 완전 제거 -->
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const container = document.getElementById('map');
@@ -369,38 +369,40 @@
             
             const options = {
                 center: latLng,
-                level: 4 // 테크노파크역과 메리빌리아가 한눈에 들어오는 최적의 줌 레벨
+                level: 4 // 테크노파크역-메리빌리아 최적 시야각
             };
             
             const map = new kakao.maps.Map(container, options);
 
-            // 1. 네모 박스/그림자를 원천 차단하는 HTML 커스텀 핀 생성
+            // [핵심] 배경이 100% 투명한 인라인 SVG 커스텀 오버레이 (네모 발생 원인 0%)
             const content = document.createElement('div');
-            content.style.cssText = 'position: relative; transform: translate(-50%, -100%); cursor: pointer;';
+            // 카카오 순정 핀과 완전히 동일한 비율의 날렵하고 예쁜 고화질 SVG
+            content.style.cssText = 'position: relative; transform: translate(-50%, -100%); line-height: 0; background: none; border: none; padding: 0; margin: 0;';
             content.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="29" height="42" viewBox="0 0 29 42" style="display: block;">
-                    <path fill="#2D75ED" stroke="#1A51B5" stroke-width="1.5" d="M14.5 0C6.5 0 0 6.5 0 14.5c0 10.9 14.5 27.5 14.5 27.5s14.5-16.6 14.5-27.5C29 6.5 22.5 0 14.5 0z"/>
-                    <circle cx="14.5" cy="14.5" r="5.5" fill="#FFFFFF"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="32" viewBox="0 0 22 32" style="display: block; filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.25));">
+                    <path fill="#2E70FT" d="M11 0C4.92 0 0 4.92 0 11c0 8.25 11 21 11 21s11-12.75 11-21c0-6.08-4.92-11-11-11zm0 15c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="#3B82F6"/>
+                    <circle cx="11" cy="11" r="3.5" fill="#FFFFFF"/>
                 </svg>
             `;
 
-            // 2. 오버레이로 장착하여 카카오 기본 마커 그림자 레이어 회피
             const customOverlay = new kakao.maps.CustomOverlay({
                 position: latLng,
                 content: content,
-                yAnchor: 1
+                xAnchor: 0.5,
+                yAnchor: 1.0
             });
 
             customOverlay.setMap(map);
 
-            // 3. 지도를 확대/축소하거나 움직여도 핀 위치 철저 고정
-            kakao.maps.event.addListener(map, 'zoom_changed', function() {
-                customOverlay.setPosition(latLng);
-            });
+            // 줌 변경이나 지도 이동 시 핀 위치 철저 고정
+            const fixPos = () => customOverlay.setPosition(latLng);
+            kakao.maps.event.addListener(map, 'zoom_changed', fixPos);
+            kakao.maps.event.addListener(map, 'dragend', fixPos);
 
             setTimeout(function() {
                 map.relayout();
                 map.setCenter(latLng);
+                fixPos();
             }, 300);
         });
     });

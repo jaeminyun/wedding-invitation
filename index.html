@@ -358,7 +358,7 @@
 
     </main>
 
-        <!-- 카카오맵 최종 완성 스크립트: 파란색 고정 + 네모 박스 없음 + 줌 축소 시 위치 이탈 방지 -->
+    <!-- 카카오맵 최종 완성 스크립트: 핀 크기 최적화(축소) + 네모 박스 0% + 줌 위치 고정 -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById('map');
@@ -374,28 +374,27 @@ document.addEventListener("DOMContentLoaded", function() {
         
         const map = new kakao.maps.Map(container, options);
 
-        // 1. 핀이 검은색으로 변하지 않도록 fill 값을 명시한 순수 벡터 SVG
+        // 핀 크기를 기존보다 슬림하고 아담하게 축소 (width: 22px, height: 32px)
         const content = document.createElement('div');
         content.style.cssText = 'background: transparent !important; border: none !important; box-shadow: none !important; padding: 0; margin: 0; line-height: 0;';
         
         content.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="29" height="42" viewBox="0 0 29 42" style="display: block; background: transparent; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.2));">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="32" viewBox="0 0 29 42" style="display: block; background: transparent; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));">
                 <path d="M14.5 0C6.5 0 0 6.5 0 14.5c0 10.9 14.5 27.5 14.5 27.5s14.5-16.6 14.5-27.5C29 6.5 22.5 0 14.5 0z" fill="#2E70FF"/>
                 <circle cx="14.5" cy="14.5" r="5.5" fill="#FFFFFF"/>
             </svg>
         `;
 
-        // 2. [핵심] CSS transform 대신 카카오 공식 오버레이 앵커를 사용하여 줌 축소 시 위치 어긋남 방지
         const customOverlay = new kakao.maps.CustomOverlay({
             position: latLng,
             content: content,
-            xAnchor: 0.5, // 가로 기준 중앙 정렬
-            yAnchor: 1.0  // 세로 기준 핀의 뾰족한 하단 끝부분이 정확히 좌표를 가리키도록 설정
+            xAnchor: 0.5,
+            yAnchor: 1.0 // 핀의 뾰족한 끝부분이 정확히 메리빌리아 좌표를 가리킴
         });
 
         customOverlay.setMap(map);
 
-        // 3. 지도 줌 변경이나 드래그 시 좌표가 흔들리지 않도록 강제 고정
+        // 줌 및 드래그 시 위치 이탈 방지
         const keepPosition = () => {
             customOverlay.setPosition(latLng);
         };

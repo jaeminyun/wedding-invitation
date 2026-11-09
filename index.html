@@ -358,45 +358,48 @@
 
     </main>
 
-    <!-- 카카오맵 최종 완성 스크립트: 핀 크기 최적화(축소) + 네모 박스 0% + 줌 위치 고정 -->
+    <!-- [최종 완성 스크립트] 슬림해진 파란 핀 + 역 시원하게 보이는 지도 뷰 + 네모 박스 0% -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById('map');
     if (!container) return;
 
     kakao.maps.load(function() {
-        const latLng = new kakao.maps.LatLng(37.38138, 126.65990);
+        const pinLatLng = new kakao.maps.LatLng(37.38138, 126.65990); // 실제 메리빌리아 위치
+        
+        // [수정 1] 테크노파크역과 메리빌리아가 화면 양쪽에 예쁘게 꽉 차도록 지도 중심 살짝 이동
+        const mapCenter = new kakao.maps.LatLng(37.38140, 126.65880);
         
         const options = {
-            center: latLng,
-            level: 4 // 테크노파크역-메리빌리아 최적 시야
+            center: mapCenter,
+            level: 3 // 역과 출구가 훨씬 크고 명확하게 잘 보이는 축척
         };
         
         const map = new kakao.maps.Map(container, options);
 
-        // 핀 크기를 기존보다 슬림하고 아담하게 축소 (width: 22px, height: 32px)
+        // [수정 2] 핀 크기를 확 아담하고 날렵하게 축소 (width: 18px, height: 26px)
         const content = document.createElement('div');
         content.style.cssText = 'background: transparent !important; border: none !important; box-shadow: none !important; padding: 0; margin: 0; line-height: 0;';
         
         content.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="32" viewBox="0 0 29 42" style="display: block; background: transparent; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="26" viewBox="0 0 29 42" style="display: block; background: transparent; filter: drop-shadow(0px 1.5px 2px rgba(0,0,0,0.25));">
                 <path d="M14.5 0C6.5 0 0 6.5 0 14.5c0 10.9 14.5 27.5 14.5 27.5s14.5-16.6 14.5-27.5C29 6.5 22.5 0 14.5 0z" fill="#2E70FF"/>
-                <circle cx="14.5" cy="14.5" r="5.5" fill="#FFFFFF"/>
+                <circle cx="14.5" cy="14.5" r="5" fill="#FFFFFF"/>
             </svg>
         `;
 
         const customOverlay = new kakao.maps.CustomOverlay({
-            position: latLng,
+            position: pinLatLng,
             content: content,
             xAnchor: 0.5,
-            yAnchor: 1.0 // 핀의 뾰족한 끝부분이 정확히 메리빌리아 좌표를 가리킴
+            yAnchor: 1.0 // 핀 하단 끝이 정확히 메리빌리아 위치 지정
         });
 
         customOverlay.setMap(map);
 
-        // 줌 및 드래그 시 위치 이탈 방지
+        // 줌 및 드래그 반응 시 위치 고정
         const keepPosition = () => {
-            customOverlay.setPosition(latLng);
+            customOverlay.setPosition(pinLatLng);
         };
 
         kakao.maps.event.addListener(map, 'zoom_changed', keepPosition);
@@ -404,7 +407,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         setTimeout(function() {
             map.relayout();
-            map.setCenter(latLng);
+            map.setCenter(mapCenter);
             keepPosition();
         }, 300);
     });

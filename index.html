@@ -358,26 +358,27 @@
 
     </main>
 
-    <!-- [최종 완성 스크립트] 슬림해진 파란 핀 + 역 시원하게 보이는 지도 뷰 + 네모 박스 0% -->
+    <!-- [최종 수정 스크립트] 테크노파크역 시원하게 표시 + 아담한 파란 핀 + 네모 박스 0% -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById('map');
     if (!container) return;
 
     kakao.maps.load(function() {
-        const pinLatLng = new kakao.maps.LatLng(37.38138, 126.65990); // 실제 메리빌리아 위치
+        // 실제 메리빌리아 위치 좌표
+        const pinLatLng = new kakao.maps.LatLng(37.38138, 126.65990); 
         
-        // [수정 1] 테크노파크역과 메리빌리아가 화면 양쪽에 예쁘게 꽉 차도록 지도 중심 살짝 이동
-        const mapCenter = new kakao.maps.LatLng(37.38140, 126.65880);
+        // [핵심] 역 이름이 절대 잘리지 않고 화면 중앙 좌측에 시원하게 들어오도록 중심점 세밀 이동
+        const mapCenter = new kakao.maps.LatLng(37.38120, 126.65780);
         
         const options = {
             center: mapCenter,
-            level: 3 // 역과 출구가 훨씬 크고 명확하게 잘 보이는 축척
+            level: 4 // 역 전체와 메리빌리아가 한 화면에 딱 담기는 최적 레벨
         };
         
         const map = new kakao.maps.Map(container, options);
 
-        // [수정 2] 핀 크기를 확 아담하고 날렵하게 축소 (width: 18px, height: 26px)
+        // 아담하고 예쁜 파란 핀 (투명 배경 SVG 커스텀 오버레이)
         const content = document.createElement('div');
         content.style.cssText = 'background: transparent !important; border: none !important; box-shadow: none !important; padding: 0; margin: 0; line-height: 0;';
         
@@ -392,12 +393,12 @@ document.addEventListener("DOMContentLoaded", function() {
             position: pinLatLng,
             content: content,
             xAnchor: 0.5,
-            yAnchor: 1.0 // 핀 하단 끝이 정확히 메리빌리아 위치 지정
+            yAnchor: 1.0
         });
 
         customOverlay.setMap(map);
 
-        // 줌 및 드래그 반응 시 위치 고정
+        // 줌/드래그 조작 시 핀 위치 고정
         const keepPosition = () => {
             customOverlay.setPosition(pinLatLng);
         };
